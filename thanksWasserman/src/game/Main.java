@@ -62,6 +62,7 @@ public class Main {
 					if(enemyMove) {
 						Moves enemySpell = currentEn.moveset[(int) (Math.random()*currentEn.moveset.length)];
 						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + enemySpell.damage + " damage");
+						p1.hp-=enemySpell.damage;
 					}
 					else {
 						
