@@ -67,6 +67,7 @@ public class Main {
 					else {
 						
 					}
+					enemyMove=!enemyMove;
 					
 				}
 				else {
