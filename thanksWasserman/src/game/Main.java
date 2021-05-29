@@ -21,6 +21,12 @@ public class Main {
 	static MouseInputs mice;
 	
 	static double radius=200;
+	
+	static boolean battling=false;
+	
+	static Enemy currentEn=null;
+	
+	static boolean enemyMove=false;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -51,47 +57,67 @@ public class Main {
 		
 		while(p1.hp>0) {
 			
-			int veloX=p1.updateX(keyboard);
-			int veloY=p1.updateY(keyboard);
-			
-			for(Entity en: things) {
-				if(mice.clicked) {
-					if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
-						if(en.getClass().equals(Enemy.class)) {
-							System.out.println("sheeesh");
-						}
+			if(battling) {
+				if(p1.hp>0 && currentEn.hp>0) {
+					if(enemyMove) {
+						Moves enemySpell = currentEn.moveset[(int) (Math.random()*currentEn.moveset.length)];
+						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + enemySpell.damage + " damage");
 					}
-				}
-				Player p2= new Player(p1);
-
-				p2.x+=veloX;
-				if(touchesX(p2, en) && touches(p2, en)) {
-					veloX=0;
-				}				
-				
-				p2= new Player(p1);
-
-				p2.y+=veloY;
-				
-				if(touchesY(p2, en) && touches(p2, en)) {
-					veloY=0;
-				}
-				
-			}
-			p1.x+=veloX;
-			p1.y+=veloY;
-			
-			
-			if(mice.clicked) {
-				for(Entity en: things) {
-					if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
-						if(en.getClass().equals(Enemy.class)) {
-							System.out.println("sheeesh");
-						}
+					else {
+						
 					}
 					
 				}
+				else {
+					currentEn=null;
+					battling=false;
+				}
 			}
+			
+			else {
+				int veloX=p1.updateX(keyboard);
+				int veloY=p1.updateY(keyboard);
+				
+				for(Entity en: things) {
+					if(mice.clicked) {
+						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
+							if(en.getClass().equals(Enemy.class)) {
+								System.out.println("sheeesh");
+							}
+						}
+					}
+					Player p2= new Player(p1);
+
+					p2.x+=veloX;
+					if(touchesX(p2, en) && touches(p2, en)) {
+						veloX=0;
+					}				
+					
+					p2= new Player(p1);
+
+					p2.y+=veloY;
+					
+					if(touchesY(p2, en) && touches(p2, en)) {
+						veloY=0;
+					}
+					
+				}
+				p1.x+=veloX;
+				p1.y+=veloY;
+				
+				
+				if(mice.clicked) {
+					for(Entity en: things) {
+						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
+							if(en.getClass().equals(Enemy.class)) {
+								currentEn= (Enemy) en;
+							}
+						}
+						
+					}
+				}
+			}
+			
 			
 			behind.repaint();
 			

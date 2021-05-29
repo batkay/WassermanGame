@@ -60,6 +60,8 @@ public class Background extends Canvas implements Runnable{
         
         //bufferG.drawString("x: "+ Main.p1.xPos+"\ny:" + Main.p1.yPos, 200, 205);
         
+        
+        
         for(Entity en: things) {
         	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
         	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
@@ -74,7 +76,9 @@ public class Background extends Canvas implements Runnable{
         
         g.drawImage(buffer, 0, 0, this); //place the buffer image onto the actual
 	}
-	
+	public void displayText(String text) {
+		
+	}
 	
 
 }
