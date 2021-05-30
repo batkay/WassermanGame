@@ -21,6 +21,11 @@ public class Background extends Canvas implements Runnable{
 	ArrayList<Entity> things;
 	MouseInputs m;
 	
+	Enemy currentEn;
+	boolean battling=false;
+	
+	String text=null;
+	
 	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m) {
 		setSize(s); //set the frame to an initial size
 		this.f=f; 
@@ -28,10 +33,19 @@ public class Background extends Canvas implements Runnable{
 		this.things=things;
 		this.m=m;
 	}
+	
+	public void setEnemy(Enemy en) {
+		currentEn=en;
+	}
+	public void setBattling(boolean battling) {
+		this.battling=battling;
+	}
+	
 	@Override
 	public void run() {
 		while (true) {
-			repaint();
+			//repaint();
+			
 			try {
 				Thread.sleep(10);
 				
@@ -54,30 +68,52 @@ public class Background extends Canvas implements Runnable{
         int smaller=Math.min(width, height);
         int factor = (int) Math.round((smaller/20.0)/50.0); //50*factor= new value
 
+        int pWidth=(int)(factor *p1.width);
+        int pHeight=(int)(factor * p1.height);
 		
 		Image buffer=createImage(f.getWidth(), f.getHeight()); //create a new image to draw on
         Graphics2D bufferG=(Graphics2D) buffer.getGraphics(); //get its graphics
         
         //bufferG.drawString("x: "+ Main.p1.xPos+"\ny:" + Main.p1.yPos, 200, 205);
         
-        
-        
-        for(Entity en: things) {
-        	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
-        	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
+       
+        if(battling) {
+        	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
+        	int enWidth = p1.width*factor * 2;
+        	bufferG.fillRect(3*width/4-enWidth/2, height/4-enHeight/2, enWidth, enHeight); //enemy drawing
+        	
+        	if(text!=null) {
+        		bufferG.drawString(text, factor, height*9/10);
+        	}
+        	
+        	bufferG.setColor(Color.BLUE);
+        	bufferG.fillRect(2*pWidth, height/2, pWidth*2, pHeight*2);
+        	
+        	bufferG.setColor(Color.GREEN);
+        	bufferG.fillRect(width/2, height/2, (int) ((p1.hp/p1.maxHp)*width/4), height/20);
+        	
+        	bufferG.setColor(Color.RED);
+        	bufferG.fillRect(pWidth, height/4, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
+        	
+        	
+        }
+        else {
+        	for(Entity en: things) {
+            	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
+            	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
+            }
+            
+            
+            bufferG.rotate(m.angle, width/2, height/2);
+            bufferG.setColor(Color.BLUE);
+            bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
         }
         
-        int pWidth=(int)(factor *p1.width);
-        int pHeight=(int)(factor * p1.height);
-        
-        bufferG.rotate(m.angle, width/2, height/2);
-        bufferG.setColor(Color.BLUE);
-        bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight);
         
         g.drawImage(buffer, 0, 0, this); //place the buffer image onto the actual
 	}
 	public void displayText(String text) {
-		
+		this.text=text;
 	}
 	
 

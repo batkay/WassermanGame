@@ -27,6 +27,14 @@ public class Main {
 	static Enemy currentEn=null;
 	
 	static boolean enemyMove=false;
+	
+	static enum CurrentMove {
+		enemyMove, playerMove, displayingText
+	}
+	static CurrentMove move=CurrentMove.playerMove;
+	
+	static boolean held=false;
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -35,7 +43,7 @@ public class Main {
 		things= new ArrayList<>();
 		mice= new MouseInputs(frame, p1);
 		
-		things.add(new Entity(0,0, 20, 20));
+		things.add(new Obstruction(0,0, 20, 20));
 		things.add(new Enemy(10, 200, 200));
 		
 		Background behind = new Background(size, frame, p1, things, mice);
@@ -53,7 +61,7 @@ public class Main {
 		frame.setSize(size);
 		frame.setVisible(true);
 		
-		//background.start();
+		background.start();
 		
 		while(p1.hp>0) {
 			
@@ -65,14 +73,34 @@ public class Main {
 						p1.hp-=enemySpell.damage;
 					}
 					else {
+						behind.displayText("sheesh");
+						/*
+						Moves playerSpell= null;
 						
+						while(playerSpell==null) {
+							
+						}
+						
+						
+						if(playerSpell.name.equals("attack")) {
+							
+						}
+						else if(playerSpell.name.equals("item")) {
+							
+						}
+						*/
 					}
+					
 					enemyMove=!enemyMove;
+					
 					
 				}
 				else {
 					currentEn=null;
 					battling=false;
+					
+					behind.battling=battling;
+					behind.currentEn=currentEn;
 				}
 			}
 			
@@ -84,7 +112,15 @@ public class Main {
 					if(mice.clicked) {
 						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
 							if(en.getClass().equals(Enemy.class)) {
-								System.out.println("sheeesh");
+								//System.out.println("sheeesh");
+								
+								p1.hp=p1.maxHp;
+								
+								currentEn= (Enemy) en;
+								battling=true;
+								
+								behind.battling=battling;
+								behind.currentEn=currentEn;
 							}
 						}
 					}
@@ -107,7 +143,7 @@ public class Main {
 				p1.x+=veloX;
 				p1.y+=veloY;
 				
-				
+				/*
 				if(mice.clicked) {
 					for(Entity en: things) {
 						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
@@ -118,11 +154,31 @@ public class Main {
 						
 					}
 				}
+				*/
 			}
-			
 			
 			behind.repaint();
 			
+			//stuck here
+			if(battling) {
+				int initial=mice.clicks;
+				while(mice.clicks==initial) {
+					//held=true;
+					
+					try {
+						Thread.sleep(10);
+					}
+					catch(InterruptedException e) {}
+				}
+			}
+			/*
+			if(!mice.clicked) {
+				held=false;
+			}
+			*/
+			//System.out.println("3");
+
+			behind.displayText(null);
 			
 			try {
 				Thread.sleep(10);

@@ -1,6 +1,6 @@
 package game;
 
-public class Entity {
+public abstract class Entity {
 	double x;
 	double y;
 	int width;

@@ -3,12 +3,14 @@ package game;
 import java.util.ArrayList;
 
 public class Enemy extends Entity{
-	int hp;
+	double hp;
+	double maxHp;
 	Moves[] moveset;
 	
 	String name;
-	public Enemy(int hp, double x, double y) {
+	public Enemy(double hp, double x, double y) {
 		super(x, y, 50, 50);
+		this.maxHp=hp;
 		this.hp=hp;
 		
 		if(hp>100) {
@@ -20,7 +22,9 @@ public class Enemy extends Entity{
 			moveset[3] = new Moves(25, "CollegeBoard is watching");
 		}
 		else {
-			name = "";
+			name = "Placeholder";
+			moveset = new Moves[1];
+			moveset[0] = new Moves(1, "Tackle");
 		}
 		
 	}

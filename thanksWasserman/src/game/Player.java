@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class Player extends Entity{
 	double hp;
-	
-	
+	double maxHp;
 	double moveSpeed=10;
 	
 	ArrayList items;
@@ -14,7 +13,8 @@ public class Player extends Entity{
 	public Player(double hp, double xPos, double yPos) {
 		super(xPos, yPos, 50, 50);
 		items=new ArrayList<>();
-		this.hp=hp;
+		this.maxHp=hp;
+		this.hp=maxHp;
 		
 	}
 	

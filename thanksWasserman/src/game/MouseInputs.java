@@ -21,7 +21,7 @@ public class MouseInputs extends MouseAdapter{
 	Player p;
 	
 	boolean clicked=false;
-	
+	int clicks=0;
 	Point click = new Point(0,0);
 	
 	public MouseInputs(JFrame j, Player p) {
@@ -33,7 +33,7 @@ public class MouseInputs extends MouseAdapter{
     //mouse
     @Override
     public void mouseClicked(MouseEvent e){
-    	
+    	clicks++;
     }
     @Override
     public void mouseEntered(MouseEvent e){
