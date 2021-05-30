@@ -22,6 +22,7 @@ public class MouseInputs extends MouseAdapter{
 	
 	boolean clicked=false;
 	int clicks=0;
+	Point globalClick = new Point(0,0);
 	Point click = new Point(0,0);
 	
 	public MouseInputs(JFrame j, Player p) {
@@ -46,7 +47,8 @@ public class MouseInputs extends MouseAdapter{
     @Override
     public void mousePressed(MouseEvent e){
         clicked=true;
-        click= screenToGlobal(p.x, p.y, e.getX(), e.getY(), j.getWidth(), j.getHeight());
+        globalClick= screenToGlobal(p.x, p.y, e.getX(), e.getY(), j.getWidth(), j.getHeight());
+        click= new Point(e.getX(), e.getY());
     }
     @Override
     public void mouseReleased(MouseEvent e){

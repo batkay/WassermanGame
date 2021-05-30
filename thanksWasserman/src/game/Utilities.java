@@ -30,6 +30,13 @@ public class Utilities {
 		return true;
 	}
 	
+	public static boolean contains(double x, double y, Entity e) {
+		return contains(x, y, e.x, e.y, e.width, e.height);
+	}
+	public static boolean contains(Point p, Entity e) {
+		return contains(p.x, p.y, e);
+	}
+	
 	public static boolean touches (Entity en1, Entity en2) {
 		if(en1.x+en1.width/2 <= en2.x-en2.width/2 || en2.x+en2.width/2 <= en1.x-en1.width/2) {
 			return false;

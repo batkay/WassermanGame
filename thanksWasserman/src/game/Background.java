@@ -26,6 +26,10 @@ public class Background extends Canvas implements Runnable{
 	
 	String text=null;
 	
+	boolean pMove=false;
+	Entity aButton = new Entity (50, 50, 50, 50);
+	Entity iButton = new Entity (100, 100, 50, 50);
+	
 	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m) {
 		setSize(s); //set the frame to an initial size
 		this.f=f; 
@@ -39,6 +43,16 @@ public class Background extends Canvas implements Runnable{
 	}
 	public void setBattling(boolean battling) {
 		this.battling=battling;
+	}
+	public void playerMove(boolean pMove) {
+		this.pMove=pMove;
+	}
+	
+	public Entity getA() {
+		return aButton;
+	}
+	public Entity getI() {
+		return iButton;
 	}
 	
 	@Override
@@ -80,6 +94,11 @@ public class Background extends Canvas implements Runnable{
         if(battling) {
         	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
         	int enWidth = p1.width*factor * 2;
+        	
+        	aButton = new Entity (width/10, height*17/20-factor*50, factor*2*50, factor * 2 *50);
+        	iButton = new Entity (width*7/10, height*17/20-factor*50, factor*2*50, factor*2*50);
+        	
+        	
         	bufferG.fillRect(3*width/4-enWidth/2, height/4-enHeight/2, enWidth, enHeight); //enemy drawing
         	
         	if(text!=null) {
@@ -94,6 +113,14 @@ public class Background extends Canvas implements Runnable{
         	
         	bufferG.setColor(Color.RED);
         	bufferG.fillRect(pWidth, height/4, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
+        	
+        	if(pMove) {
+        		bufferG.setColor(Color.CYAN);
+            	bufferG.fillRect((int)(aButton.x-aButton.width/2), (int)(aButton.y-aButton.height/2), aButton.width, aButton.height);
+            	bufferG.fillRect((int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height);
+        	}
+        	
+
         	
         	
         }

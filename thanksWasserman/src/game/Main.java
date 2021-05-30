@@ -73,22 +73,43 @@ public class Main {
 						p1.hp-=enemySpell.damage;
 					}
 					else {
-						behind.displayText("sheesh");
-						/*
+						//behind.displayText("sheesh");
+						
 						Moves playerSpell= null;
 						
+						behind.playerMove(true);
+						
+						behind.displayText("What will you do?");
+						
+						behind.repaint();
+						//int initialC=mice.clicks;
 						while(playerSpell==null) {
 							
-						}
-						
-						
-						if(playerSpell.name.equals("attack")) {
+							if(mice.clicked && contains(mice.click, behind.getA())) {
+								playerSpell=new Moves(1, "attack");
+
+							}
+							else if(mice.clicked && contains(mice.click, behind.getI())) {
+								playerSpell=new Moves(1, "Item");
+
+							}
 							
+							try {
+								Thread.sleep(10);
+							}
+							catch(InterruptedException e) {}
 						}
-						else if(playerSpell.name.equals("item")) {
-							
+						while(mice.clicked) {
+							try {
+								Thread.sleep(10);
+							}
+							catch(InterruptedException e) {}
 						}
-						*/
+						behind.playerMove(false);
+						behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
+						currentEn.hp-=playerSpell.damage;
+
+						
 					}
 					
 					enemyMove=!enemyMove;
@@ -110,7 +131,7 @@ public class Main {
 				
 				for(Entity en: things) {
 					if(mice.clicked) {
-						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
+						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.globalClick.x, mice.globalClick.y, en.x, en.y, en.width, en.height)) {
 							if(en.getClass().equals(Enemy.class)) {
 								//System.out.println("sheeesh");
 								
@@ -160,6 +181,7 @@ public class Main {
 			behind.repaint();
 			
 			//stuck here
+			/*
 			if(battling) {
 				int initial=mice.clicks;
 				while(mice.clicks==initial) {
@@ -171,11 +193,35 @@ public class Main {
 					catch(InterruptedException e) {}
 				}
 			}
+			*/
+			
+			if(battling) {
+				while(!mice.clicked) {
+					try {
+						Thread.sleep(10);
+					}
+					catch(InterruptedException e) {}
+				}
+				held=true;
+				while(held) {
+					if(!mice.clicked) {
+						held=false;
+					}
+					try {
+						Thread.sleep(10);
+					}
+					catch(InterruptedException e) {}
+				}
+			}
+			
 			/*
-			if(!mice.clicked) {
-				held=false;
+			if(mice.clicked) {
+				held=true;
 			}
 			*/
+			
+			
+			
 			//System.out.println("3");
 
 			behind.displayText(null);
