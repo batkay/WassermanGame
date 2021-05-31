@@ -95,24 +95,24 @@ public class Background extends Canvas implements Runnable{
         	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
         	int enWidth = p1.width*factor * 2;
         	
-        	aButton = new Entity (width/10, height*17/20-factor*50, factor*2*50, factor * 2 *50);
-        	iButton = new Entity (width*7/10, height*17/20-factor*50, factor*2*50, factor*2*50);
+        	aButton = new Entity (width/10, height*18/20-factor*50, factor*2*50, factor * 2 *50);
+        	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50);
         	
         	
-        	bufferG.fillRect(3*width/4-enWidth/2, height/4-enHeight/2, enWidth, enHeight); //enemy drawing
+        	bufferG.fillRect(3*width/4-enWidth/2, height/8, enWidth, enHeight); //enemy drawing
         	
         	if(text!=null) {
-        		bufferG.drawString(text, factor, height*9/10);
+        		bufferG.drawString(text, factor, height*6/10);
         	}
         	
         	bufferG.setColor(Color.BLUE);
-        	bufferG.fillRect(2*pWidth, height/2, pWidth*2, pHeight*2);
+        	bufferG.fillRect(2*pWidth, height*3/8, pWidth*2, pHeight*2);
         	
         	bufferG.setColor(Color.GREEN);
-        	bufferG.fillRect(width/2, height/2, (int) ((p1.hp/p1.maxHp)*width/4), height/20);
+        	bufferG.fillRect(width/2, height*3/8, (int) ((p1.hp/p1.maxHp)*width/4), height/20);
         	
         	bufferG.setColor(Color.RED);
-        	bufferG.fillRect(pWidth, height/4, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
+        	bufferG.fillRect(pWidth, height/8, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
         	
         	if(pMove) {
         		bufferG.setColor(Color.CYAN);

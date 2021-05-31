@@ -35,7 +35,18 @@ public class Main {
 	
 	static boolean held=false;
 	
+	static String[][] questions = new String[5][5];
+	static int q=0;
+	
+	
 	public static void main(String[] args) {
+		questions[0][0] = "How do you save a whole number value?";
+		questions[0][1] = "Integer";
+		questions[0][2]= "Boolean";
+		questions[0][3]= "String";
+		questions[0][4]= "Char";
+
+		
 		// TODO Auto-generated method stub
 		
 		frame = new JFrame("game name");
@@ -106,6 +117,27 @@ public class Main {
 							catch(InterruptedException e) {}
 						}
 						behind.playerMove(false);
+						
+						
+						// put question logic here
+						behind.displayText(questions[q][0]);
+						int spot = (int)(Math.random()* 4); //what question spot the answer will be
+						String[] answerOrder= new String[4]; //the order the anwers will appear in
+						answerOrder[spot] = questions[q][1];
+						int j=2;
+						for(int i=0; i<questions.length; i++) {
+							if(answerOrder[i]!=null) {
+								continue;
+							}
+							
+							answerOrder[i]= questions[q][j];
+							j++;
+						}
+						//answerOrder should have the answres in a random order now
+						
+						
+						
+						
 						behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
 						currentEn.hp-=playerSpell.damage;
 
