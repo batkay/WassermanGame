@@ -8,18 +8,19 @@ public class Player extends Entity{
 	double maxHp;
 	double moveSpeed=10;
 	
-	ArrayList items;
+	EquippableItem equipped;
+	
+	ArrayList<Item> items;
 	
 	public Player(double hp, double xPos, double yPos) {
 		super(xPos, yPos, 50, 50);
-		items=new ArrayList<>();
+		items=new ArrayList<Item>();
 		this.maxHp=hp;
 		this.hp=maxHp;
 		
 	}
 	
 	public Player(Player p1) {
-		// TODO Auto-generated constructor stub
 		
 		super(p1.x, p1.y, 50, 50);
 		items = new ArrayList<>();
@@ -54,5 +55,19 @@ public class Player extends Entity{
 		//y+=velocity;
 		return velocity;
 
+	}
+	
+	public void updateHP(int hp) {
+		this.hp += hp;
+	}
+	public void equipItem(EquippableItem e) {
+		if (this.equipped == null) {
+			this.items.remove(e);
+			this.equipped = e;
+			return;
+		}
+		this.items.add(this.equipped);
+		this.equipped = e;
+		this.items.remove(e);
 	}
 }

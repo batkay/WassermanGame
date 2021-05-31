@@ -36,7 +36,6 @@ public class Main {
 	static boolean held=false;
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		frame = new JFrame("game name");
 		p1= new Player(10, 100, 100);
