@@ -37,18 +37,14 @@ public class Main {
 	
 	static String[][] questions = new String[5][5];
 	static int q=0;
-	
-	
-	public static void main(String[] args) {
-		questions[0][0] = "How do you save a whole number value?";
-		questions[0][1] = "Integer";
-		questions[0][2]= "Boolean";
-		questions[0][3]= "String";
-		questions[0][4]= "Char";
-
 		
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) {
+		questions[0][0] = "What stores a whole number value?";
+		questions[0][1] = "Integer";
+		questions[0][2] = "Boolean";
+		questions[0][3] = "String";
+		questions[0][4] = "Double";
+		
 		frame = new JFrame("game name");
 		p1= new Player(10, 100, 100);
 		things= new ArrayList<>();
