@@ -48,7 +48,7 @@ public class Main {
 
 		
 		// TODO Auto-generated method stub
-		
+
 		frame = new JFrame("game name");
 		p1= new Player(10, 100, 100);
 		things= new ArrayList<>();
