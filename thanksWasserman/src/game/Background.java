@@ -30,6 +30,16 @@ public class Background extends Canvas implements Runnable{
 	Entity aButton = new Entity (50, 50, 50, 50);
 	Entity iButton = new Entity (100, 100, 50, 50);
 	
+	Entity tlB = new Entity (50, 50, 50, 50);
+	Entity trB = new Entity (50, 100, 50, 50);
+	
+	Entity blB=new Entity (100, 50, 50, 50);
+	Entity brB=new Entity (100, 100, 50, 50);
+	
+	
+	boolean askedQ =false;
+	String[] answers=null;
+	
 	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m) {
 		setSize(s); //set the frame to an initial size
 		this.f=f; 
@@ -53,6 +63,25 @@ public class Background extends Canvas implements Runnable{
 	}
 	public Entity getI() {
 		return iButton;
+	}
+	
+	public Entity getTL() {
+		return tlB;
+	}
+	public Entity getTR() {
+		return trB;
+	}
+	public Entity getBL() {
+		return blB;
+	}
+	public Entity getBR() {
+		return brB;
+	}
+	
+	public void askQ(String[] answers) {
+		this.answers=answers;
+		
+		askedQ=true;
 	}
 	
 	@Override
@@ -120,7 +149,30 @@ public class Background extends Canvas implements Runnable{
             	bufferG.fillRect((int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height);
         	}
         	
+        	if(askedQ) {
+        		tlB = new Entity (width/10, height*16/20-factor*50, factor*50, factor*50);
+            	trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50);
+        		
+            	blB=new Entity (width/10, height*18/20-factor*50, factor*50, factor *50);
+            	brB=new Entity (width*6/10, height*18/20-factor*50, factor*50, factor *50);
+            	
+            	Entity[] buttons = {tlB, trB, blB, brB};
 
+            	bufferG.setColor(Color.BLACK);
+            	bufferG.drawString(answers[0], width*2/10, height*16/20-factor*50);
+            	bufferG.drawString(answers[1], width*7/10, height*16/20-factor*50);
+            	bufferG.drawString(answers[2], width*2/10, height*18/20-factor*50);
+            	bufferG.drawString(answers[3], width*7/10, height*18/20-factor*50);
+
+            	bufferG.setColor(Color.MAGENTA);
+
+            	for (Entity button: buttons) {
+                	bufferG.fillRect((int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height);
+            	}
+            	
+            	
+        		askedQ=false;
+        	}
         	
         	
         }

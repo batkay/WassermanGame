@@ -35,8 +35,8 @@ public class Main {
 	
 	static boolean held=false;
 	
-	static String[][] questions = new String[5][5];
-	static int q=0;
+	static String[][] questions = new String[2][5];
+	//static int q=0;
 		
 	public static void main(String[] args) {
 		questions[0][0] = "What stores a whole number value?";
@@ -44,6 +44,12 @@ public class Main {
 		questions[0][2] = "Boolean";
 		questions[0][3] = "String";
 		questions[0][4] = "Double";
+		
+		questions[1][0] = "What stores a non-whole number value?";
+		questions[1][1] = "Double";
+		questions[1][2] = "Boolean";
+		questions[1][3] = "String";
+		questions[1][4] = "Integer";
 		
 		frame = new JFrame("game name");
 		p1= new Player(10, 100, 100);
@@ -115,23 +121,70 @@ public class Main {
 						behind.playerMove(false);
 						
 						
-						// put question logic here
-						behind.displayText(questions[q][0]);
-						int spot = (int)(Math.random()* 4); //what question spot the answer will be
-						String[] answerOrder= new String[4]; //the order the anwers will appear in
-						answerOrder[spot] = questions[q][1];
-						int j=2;
-						for(int i=0; i<questions.length; i++) {
-							if(answerOrder[i]!=null) {
-								continue;
+						//if they chose to answer a question
+						if(playerSpell.name.equals("attack")) {
+							
+							int q=(int) (Math.random()*questions.length);
+							// put question logic here
+							behind.displayText(questions[q][0]);
+							
+							int spot = (int)(Math.random()* 4); //what question spot the answer will be
+							
+							
+							String[] answerOrder= new String[4]; //the order the anwers will appear in
+							answerOrder[spot] = questions[q][1];
+							int j=2;
+							for(int i=0; i<answerOrder.length; i++) {
+								if(answerOrder[i]!=null) {
+									continue;
+								}
+								
+								answerOrder[i]= questions[q][j];
+								j++;
+							}
+							//answerOrder should have the answres in a random order now
+							
+							behind.askQ(answerOrder);
+							
+							behind.repaint();
+							
+							int answer = -1;
+							while(answer==-1) {
+								
+								if(mice.clicked && contains(mice.click, behind.getTL() )) {
+									answer=0;
+								}
+								else if(mice.clicked && contains(mice.click, behind.getTR())) {
+									answer=1;
+								}
+								else if(mice.clicked && contains(mice.click, behind.getBL())) {
+									answer=2;
+								}
+								else if(mice.clicked && contains(mice.click, behind.getBR())) {
+									answer=3;
+								}
+								
+								try {
+									Thread.sleep(10);
+								}
+								catch(InterruptedException e) {}
+								
+							}
+							while(mice.clicked) {
+								try {
+									Thread.sleep(10);
+								}
+								catch(InterruptedException e) {}
 							}
 							
-							answerOrder[i]= questions[q][j];
-							j++;
+							if(answer==spot) {
+								
+							}
+							else {
+								playerSpell= new Moves(0, "Wrong");
+							}
+							
 						}
-						//answerOrder should have the answres in a random order now
-						
-						
 						
 						
 						behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
