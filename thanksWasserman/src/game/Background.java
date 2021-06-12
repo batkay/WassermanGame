@@ -8,13 +8,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import static game.Utilities.*;
 
-public class Background extends Canvas implements Runnable{
+public class Background extends Canvas implements Runnable {
 	
 	JFrame f;
 	Player p1;
@@ -40,12 +43,28 @@ public class Background extends Canvas implements Runnable{
 	boolean askedQ =false;
 	String[] answers=null;
 	
-	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m) {
+	Image button0;
+	Image button1;
+	Image button2;
+	Image button3;
+	
+	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m){
 		setSize(s); //set the frame to an initial size
 		this.f=f; 
 		this.p1=p1;
 		this.things=things;
 		this.m=m;
+		
+		try {
+			button0 = ImageIO.read(new File("src/extras/firstOpt.png"));
+			button1 = ImageIO.read(new File("src/extras/SecondOpt.png"));
+			button2 = ImageIO.read(new File("src/extras/thirdOpt.png"));
+			button3 = ImageIO.read(new File("src/extras/FourthOpt.png"));
+		}
+		catch (IOException e) {
+			
+		}
+		
 	}
 	
 	public void setEnemy(Enemy en) {
@@ -128,6 +147,7 @@ public class Background extends Canvas implements Runnable{
         	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50);
         	
         	
+        	
         	bufferG.fillRect(3*width/4-enWidth/2, height/8, enWidth, enHeight); //enemy drawing
         	
         	if(text!=null) {
@@ -135,7 +155,8 @@ public class Background extends Canvas implements Runnable{
         	}
         	
         	bufferG.setColor(Color.BLUE);
-        	bufferG.fillRect(2*pWidth, height*3/8, pWidth*2, pHeight*2);
+        	//bufferG.fillRect(2*pWidth, height*3/8, pWidth*2, pHeight*2);
+        	bufferG.drawImage(p1.getPic(), 2*pWidth, height*3/8, pWidth*2, pHeight*2, this);
         	
         	bufferG.setColor(Color.GREEN);
         	bufferG.fillRect(width/2, height*3/8, (int) ((p1.hp/p1.maxHp)*width/4), height/20);
@@ -150,11 +171,11 @@ public class Background extends Canvas implements Runnable{
         	}
         	
         	if(askedQ) {
-        		tlB = new Entity (width/10, height*16/20-factor*50, factor*50, factor*50);
-            	trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50);
+        		tlB = new Entity (width/10, height*16/20-factor*50, factor*50, factor*50, button0);
+            	trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50, button1);
         		
-            	blB=new Entity (width/10, height*18/20-factor*50, factor*50, factor *50);
-            	brB=new Entity (width*6/10, height*18/20-factor*50, factor*50, factor *50);
+            	blB=new Entity (width/10, height*18/20-factor*50, factor*50, factor *50, button2);
+            	brB=new Entity (width*6/10, height*18/20-factor*50, factor*50, factor *50, button3);
             	
             	Entity[] buttons = {tlB, trB, blB, brB};
 
@@ -167,7 +188,8 @@ public class Background extends Canvas implements Runnable{
             	bufferG.setColor(Color.MAGENTA);
 
             	for (Entity button: buttons) {
-                	bufferG.fillRect((int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height);
+                	//bufferG.fillRect((int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height);
+                	bufferG.drawImage(button.getPic(), (int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height, this);
             	}
             	
             	
@@ -183,9 +205,11 @@ public class Background extends Canvas implements Runnable{
             }
             
             
-            bufferG.rotate(m.angle, width/2, height/2);
+            bufferG.rotate(m.angle+Math.PI/2, width/2, height/2);
             bufferG.setColor(Color.BLUE);
-            bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
+            //bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
+        	bufferG.drawImage(p1.getPic(), width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight, this);
+
         }
         
         

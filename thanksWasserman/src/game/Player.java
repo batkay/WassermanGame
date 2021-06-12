@@ -1,23 +1,26 @@
 package game;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Player extends Entity{
 	double hp;
 	double maxHp;
 	double moveSpeed=10;
-	
+		
 	EquippableItem equipped;
 	
 	ArrayList<Item> items;
 	
-	public Player(double hp, double xPos, double yPos) {
-		super(xPos, yPos, 50, 50);
+	public Player(double hp, double xPos, double yPos) throws IOException {
+		super(xPos, yPos, 50, 50, ImageIO.read(new File("src/extras/jimmy.png")));
 		items=new ArrayList<Item>();
 		this.maxHp=hp;
 		this.hp=maxHp;
-		
 	}
 	
 	public Player(Player p1) {
@@ -70,4 +73,5 @@ public class Player extends Entity{
 		this.equipped = e;
 		this.items.remove(e);
 	}
+	
 }

@@ -3,10 +3,13 @@ package game;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -43,10 +46,10 @@ public class Main {
 	
 	static ArrayList<String[]> questions= new ArrayList<>();
 	//static int q=0;
-	
+	static String questionFile;
 	static FileInputStream file;
-	static DataInputStream theInputs; 
-		
+	static BufferedReader theInputs; 
+	static DataInputStream d;
 	public static void main(String[] args) throws IOException {
 		/*
 		questions[0][0] = "What stores a whole number value?";
@@ -62,19 +65,48 @@ public class Main {
 		questions[1][4] = "Integer";
 		*/
 		try {
-			file= new FileInputStream ("src/extras/questions.csv");
+			questionFile= "src/extras/questions.csv";
+			file= new FileInputStream (questionFile);
 
 		}
 		catch (FileNotFoundException e){
 			System.out.println("oof");
 		}
 		
+		//d= new DataInputStream(file);
 		
-		theInputs = new DataInputStream(file);
+		theInputs = new BufferedReader(new InputStreamReader(file));
+		
 		
 		String line=theInputs.readLine();
 		while(line!=null) {
-			questions.add(line.split(","));
+			String[] words= line.split(",");
+			for(int i=0; i<words.length; i++) {
+				if(words[i].contains("\"")) {
+					words[i]=(String) words[i].subSequence(1, words[i].length()-1);
+					ArrayList<String> partStrings= new ArrayList<>();
+					
+					while(words[i].contains("\"\"")) {
+						partStrings.add(words[i].substring(0, words[i].indexOf("\"\"")));
+						partStrings.add("\"");
+						words[i]=words[i].substring(words[i].indexOf("\"\"")+2);
+					}
+					String reconstructed="";
+					for(int j=0; j<partStrings.size(); j++) {
+						reconstructed=reconstructed+partStrings.get(j);
+					}
+					reconstructed=reconstructed+words[i];
+					
+					words[i]=reconstructed;
+					/*
+					while(words[i].contains("\"\"")) {
+						words[i]=words[i].substring(0, words[i].indexOf("\"\""))+"\"" +words[i].substring(words[i].indexOf("\"\"")+2);
+					}
+					*/
+				}
+			}
+			questions.add(words);
+			//questions.add(line.split(","));
 			line=theInputs.readLine();
 		}
 		
