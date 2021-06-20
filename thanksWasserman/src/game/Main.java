@@ -5,12 +5,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -53,7 +59,48 @@ public class Main {
 	
 	static int currentLevel=1;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args){
+		File save = new File("src/extras/save.txt");
+		try {
+			if(!save.createNewFile()) {
+				Scanner scan = new Scanner(save);
+				currentLevel=scan.nextInt();
+				//System.out.println(currentLevel);
+				
+				/*
+				FileReader reader= new FileReader(save);
+				currentLevel=reader.read();
+				System.out.println(currentLevel);
+				reader.close();
+				*/
+
+				/*
+				RandomAccessFile read= new RandomAccessFile(save, "r");
+				
+				System.out.println(read.length());
+				//read.seek(read.length());
+				currentLevel=read.readInt();
+				System.out.println(currentLevel);
+				read.close();
+				*/
+			}
+			else {
+				FileWriter writer= new FileWriter(save, false);
+				writer.write(currentLevel+"");
+				writer.close();
+				/*
+				RandomAccessFile write = new RandomAccessFile(save, "rw");
+				write.seek(0);
+				write.write(currentLevel);
+				write.close();
+				*/
+			}
+		} catch (IOException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		
+		
 		/*
 		questions[0][0] = "What stores a whole number value?";
 		questions[0][1] = "Integer";
@@ -81,41 +128,53 @@ public class Main {
 		theInputs = new BufferedReader(new InputStreamReader(file));
 		
 		
-		String line=theInputs.readLine();
-		while(line!=null) {
-			String[] words= line.split(",");
-			for(int i=0; i<words.length; i++) {
-				if(words[i].contains("\"")) {
-					words[i]=(String) words[i].subSequence(1, words[i].length()-1);
-					ArrayList<String> partStrings= new ArrayList<>();
-					
-					while(words[i].contains("\"\"")) {
-						partStrings.add(words[i].substring(0, words[i].indexOf("\"\"")));
-						partStrings.add("\"");
-						words[i]=words[i].substring(words[i].indexOf("\"\"")+2);
+		String line;
+		try {
+			line = theInputs.readLine();
+			while(line!=null) {
+				String[] words= line.split(",");
+				for(int i=0; i<words.length; i++) {
+					if(words[i].contains("\"")) {
+						words[i]=(String) words[i].subSequence(1, words[i].length()-1);
+						ArrayList<String> partStrings= new ArrayList<>();
+						
+						while(words[i].contains("\"\"")) {
+							partStrings.add(words[i].substring(0, words[i].indexOf("\"\"")));
+							partStrings.add("\"");
+							words[i]=words[i].substring(words[i].indexOf("\"\"")+2);
+						}
+						String reconstructed="";
+						for(int j=0; j<partStrings.size(); j++) {
+							reconstructed=reconstructed+partStrings.get(j);
+						}
+						reconstructed=reconstructed+words[i];
+						
+						words[i]=reconstructed;
+						/*
+						while(words[i].contains("\"\"")) {
+							words[i]=words[i].substring(0, words[i].indexOf("\"\""))+"\"" +words[i].substring(words[i].indexOf("\"\"")+2);
+						}
+						*/
 					}
-					String reconstructed="";
-					for(int j=0; j<partStrings.size(); j++) {
-						reconstructed=reconstructed+partStrings.get(j);
-					}
-					reconstructed=reconstructed+words[i];
-					
-					words[i]=reconstructed;
-					/*
-					while(words[i].contains("\"\"")) {
-						words[i]=words[i].substring(0, words[i].indexOf("\"\""))+"\"" +words[i].substring(words[i].indexOf("\"\"")+2);
-					}
-					*/
 				}
+				questions.add(words);
+				//questions.add(line.split(","));
+				
+				line=theInputs.readLine();
 			}
-			questions.add(words);
-			//questions.add(line.split(","));
-			line=theInputs.readLine();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
 		}
 		
 		frame = new JFrame("game name");
 				
-		p1= new Player(10, 575, 1150);
+		try {
+			p1= new Player(10, 575, 1150);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		things= new ArrayList<>();
 		
@@ -143,6 +202,9 @@ public class Main {
 		behind.addKeyListener(keyboard);
 		behind.addMouseListener(mice);
 		behind.addMouseMotionListener(mice);
+		
+		behind.setLevel(currentLevel);
+
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -348,7 +410,23 @@ public class Main {
 				Level nextLevel= new Level(currentLevel, things, p1);
 				nextLevel.load();
 				enemyMove=false;
+				behind.setLevel(currentLevel);
 				
+				//write level to file
+				FileWriter writer;
+				try {
+					writer = new FileWriter(save, false);
+					writer.write(currentLevel+"");
+					writer.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				try {
+					Thread.sleep(500);
+				}
+				catch(InterruptedException e) {}
 			}
 			
 			
@@ -388,7 +466,7 @@ public class Main {
 				}
 			}
 			
-
+			
 			behind.displayText(null);
 			
 			try {

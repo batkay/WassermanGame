@@ -39,6 +39,7 @@ public class Background extends Canvas implements Runnable {
 	Entity blB=new Entity (100, 50, 50, 50);
 	Entity brB=new Entity (100, 100, 50, 50);
 	
+	int level=1;
 	
 	boolean askedQ =false;
 	String[] answers=null;
@@ -101,6 +102,9 @@ public class Background extends Canvas implements Runnable {
 		this.answers=answers;
 		
 		askedQ=true;
+	}
+	public void setLevel(int level) {
+		this.level=level;
 	}
 	
 	@Override
