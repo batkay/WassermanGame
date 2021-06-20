@@ -147,9 +147,10 @@ public class Background extends Canvas implements Runnable {
         	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50);
         	
         	
-        	
+        	bufferG.setColor(Color.YELLOW);
         	bufferG.fillRect(3*width/4-enWidth/2, height/8, enWidth, enHeight); //enemy drawing
         	
+        	bufferG.setColor(Color.BLACK);
         	if(text!=null) {
         		bufferG.drawString(text, factor, height*6/10);
         	}
@@ -200,6 +201,15 @@ public class Background extends Canvas implements Runnable {
         }
         else {
         	for(Entity en: things) {
+        		if(en.getClass().equals(Enemy.class)) {
+        			bufferG.setColor(Color.YELLOW);
+        			
+        		}
+        		else {
+        			bufferG.setColor(Color.GRAY);
+
+        		}
+        		
             	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
             	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
             }

@@ -50,6 +50,9 @@ public class Main {
 	static FileInputStream file;
 	static BufferedReader theInputs; 
 	static DataInputStream d;
+	
+	static int currentLevel=1;
+	
 	public static void main(String[] args) throws IOException {
 		/*
 		questions[0][0] = "What stores a whole number value?";
@@ -110,16 +113,27 @@ public class Main {
 			line=theInputs.readLine();
 		}
 		
-		
-		
-		
 		frame = new JFrame("game name");
-		p1= new Player(10, 100, 100);
+				
+		p1= new Player(10, 575, 1150);
+		
 		things= new ArrayList<>();
+		
+		Level firstLevel= new Level(currentLevel, things, p1);
+
 		mice= new MouseInputs(frame, p1);
 		
-		things.add(new Obstruction(0,0, 20, 20));
-		things.add(new Enemy(10, 200, 200));
+		firstLevel.load();
+		
+		/*
+		things.add(new Obstruction(25, 600, 50, 1200));
+		things.add(new Obstruction(1125, 600, 50, 1200));
+		things.add(new Obstruction(275, 900, 500, 50));
+		things.add(new Obstruction(875, 900, 500, 50));
+		things.add(new Obstruction(575, 1225, 1100, 50));
+
+		things.add(new Enemy(10, 575, 900));
+		*/
 		
 		Background behind = new Background(size, frame, p1, things, mice);
 		Thread background = new Thread (behind);
@@ -161,7 +175,7 @@ public class Main {
 						while(playerSpell==null) {
 							
 							if(mice.clicked && contains(mice.click, behind.getA())) {
-								playerSpell=new Moves(1, "attack");
+								playerSpell=new Moves(5, "attack");
 
 							}
 							else if(mice.clicked && contains(mice.click, behind.getI())) {
@@ -321,6 +335,23 @@ public class Main {
 				*/
 			}
 			
+			//removes dead enemies
+			for(int i=things.size()-1; i>=0; i--) {
+				if(things.get(i).getClass().equals(Enemy.class) && ((Enemy)things.get(i)).hp<=0) {
+					things.remove(i);
+				}
+			}
+			
+			//check to see if player reaches end
+			if(p1.y<10) {
+				currentLevel++;
+				Level nextLevel= new Level(currentLevel, things, p1);
+				nextLevel.load();
+				enemyMove=false;
+				
+			}
+			
+			
 			behind.repaint();
 			
 			//stuck here
@@ -357,15 +388,6 @@ public class Main {
 				}
 			}
 			
-			/*
-			if(mice.clicked) {
-				held=true;
-			}
-			*/
-			
-			
-			
-			//System.out.println("3");
 
 			behind.displayText(null);
 			

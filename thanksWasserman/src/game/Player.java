@@ -16,15 +16,20 @@ public class Player extends Entity{
 	
 	ArrayList<Item> items;
 	
+	double originalX;
+	double originalY;
+	
 	public Player(double hp, double xPos, double yPos) throws IOException {
 		super(xPos, yPos, 50, 50, ImageIO.read(new File("src/extras/jimmy.png")));
 		items=new ArrayList<Item>();
 		this.maxHp=hp;
 		this.hp=maxHp;
+		
+		originalX=xPos;
+		originalY=yPos;
 	}
 	
 	public Player(Player p1) {
-		
 		super(p1.x, p1.y, 50, 50);
 		items = new ArrayList<>();
 		this.hp=p1.hp;
@@ -72,6 +77,12 @@ public class Player extends Entity{
 		this.items.add(this.equipped);
 		this.equipped = e;
 		this.items.remove(e);
+	}
+	
+	public void reset() {
+		this.x=originalX;
+		this.y=originalY;
+		this.hp=maxHp;
 	}
 	
 }
