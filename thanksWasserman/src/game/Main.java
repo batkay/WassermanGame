@@ -65,6 +65,7 @@ public class Main {
 			if(!save.createNewFile()) {
 				Scanner scan = new Scanner(save);
 				currentLevel=scan.nextInt();
+				scan.close();
 				//System.out.println(currentLevel);
 				
 				/*
@@ -101,19 +102,8 @@ public class Main {
 		}
 		
 		
-		/*
-		questions[0][0] = "What stores a whole number value?";
-		questions[0][1] = "Integer";
-		questions[0][2] = "Boolean";
-		questions[0][3] = "String";
-		questions[0][4] = "Double";
 		
-		questions[1][0] = "What stores a non-whole number value?";
-		questions[1][1] = "Double";
-		questions[1][2] = "Boolean";
-		questions[1][3] = "String";
-		questions[1][4] = "Integer";
-		*/
+		
 		try {
 			questionFile= "src/extras/questions.csv";
 			file= new FileInputStream (questionFile);
@@ -174,6 +164,25 @@ public class Main {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+		
+		//get items from file
+		File items = new File("src/extras/items.txt");
+		try {
+			if(!items.createNewFile()) {
+				Scanner scan = new Scanner(items);
+				while(scan.hasNext()) {
+					p1.items.add(new EquippableItem(scan.nextLine()));
+				}
+				scan.close();
+				
+			}
+			else {
+				
+			}
+		}
+		catch(IOException e) {
+			e.printStackTrace();
 		}
 		
 		things= new ArrayList<>();
@@ -348,7 +357,8 @@ public class Main {
 				int veloX=p1.updateX(keyboard);
 				int veloY=p1.updateY(keyboard);
 				
-				for(Entity en: things) {
+				for(int i=things.size()-1; i>=0; i--) {
+					Entity en= things.get(i);
 					if(mice.clicked) {
 						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.globalClick.x, mice.globalClick.y, en.x, en.y, en.width, en.height)) {
 							if(en.getClass().equals(Enemy.class)) {
@@ -361,6 +371,10 @@ public class Main {
 								
 								behind.battling=battling;
 								behind.currentEn=currentEn;
+							}
+							else if(en.getClass().equals(Lootbox.class)) {
+								p1.items.add( ((Lootbox)en).roll() );
+								things.remove(i);
 							}
 						}
 					}

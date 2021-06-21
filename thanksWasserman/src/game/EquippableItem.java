@@ -16,15 +16,26 @@ public class EquippableItem implements Item {
 	
 	public EquippableItem(String arg) {
 		// USING list of items defined somewhere, assigned to array arr;
-		Item [] arr;
+		Item [] arr = {
+				new EquippableItem("Give Me Liberty", 10, 10, 10),
+				new EquippableItem("Fundamentals of Physics", 7, 3, 4),
+				new EquippableItem("College Physics", 4, 6, 7),
+				new EquippableItem("Java Concepts Early Objects", 20, 20, 20),
+				new EquippableItem("The Americans", 1, 1, 1),
+				new EquippableItem("The Practice of Statistics", 2, 4, 1),
+				new EquippableItem("Calculus Early Transcendentals", 8, 9, 5),
+				new EquippableItem("Campbell Biology", 4, 8, 9),
+				new EquippableItem("Chemestry", 9, 7, 10)
+				
+		};
 		// doing this the simple way to make it easy to modify and understand later
 		for (Item a : arr) {
-			if (a.name == arg) {
+			if (a.getClass().equals(EquippableItem.class) && ((EquippableItem)a).name.equals(arg)) {
 				int[] r = a.get();
 				this.atk = r[0];
 				this.def = r[1];
 				this.hp = r[2];
-				this.name = a.name;
+				this.name = ((EquippableItem)a).name;
 				return;
 			}
 		}

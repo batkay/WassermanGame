@@ -14,14 +14,14 @@ public class ConsumableItem implements Item {
 	
 	public ConsumableItem(String arg) {
 		// USING list of items defined somewhere, assigned to array arr;
-		Item [] arr;
+		Item [] arr= {};
 		// doing this the simple way to make it easy to modify and understand later
 		for (Item a : arr) {
-			if (a.name == arg) {
+			if (a.getClass().equals(ConsumableItem.class)&& ((ConsumableItem)a).name.equals(arg)) {
 				int[] r = a.get();
 				this.hpEffect = r[0];
-				this.name = a.name;
-				this.message = a.getMessage();
+				this.name = ((ConsumableItem)a).name;
+				this.message = ((ConsumableItem)a).getMessage();
 				return;
 			}
 		}
