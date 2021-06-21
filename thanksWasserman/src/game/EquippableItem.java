@@ -25,7 +25,10 @@ public class EquippableItem implements Item {
 				new EquippableItem("The Practice of Statistics", 2, 4, 1),
 				new EquippableItem("Calculus Early Transcendentals", 8, 9, 5),
 				new EquippableItem("Campbell Biology", 4, 8, 9),
-				new EquippableItem("Chemestry", 9, 7, 10)
+				new EquippableItem("Chemestry", 9, 7, 10),
+				new EquippableItem("Discovering French 3", 2, 1, 1),
+				new EquippableItem("Precalc with Limits", 8, 10, 9)
+				
 				
 		};
 		// doing this the simple way to make it easy to modify and understand later
