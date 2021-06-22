@@ -15,8 +15,7 @@ void playMusic(String musicLocation){
       clip.open(audioInput);
       clip.start();
       clip.loop(Clip.LOOP_CONTINUOUSLY);
-      JOptionPane.showMessageDialog(null, "test if works");
-
+      Thread.sleep(200000);
     }
     else{
       System.out.println("bruh");
