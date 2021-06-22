@@ -62,8 +62,8 @@ public class Enemy extends Entity{
 		else {
 			name = "Google Classroom";
 			moveset= new Moves[2];
-			moveset[0]= new Moves(1, "A new assignment has been posted");
-			moveset[1]=new Moves(2, "Overdue assignments: 1");
+			moveset[0]= new Moves(2, "A new assignment has been posted");
+			moveset[1]=new Moves(3, "Overdue assignments: 1");
 			try {
 				this.pic = ImageIO.read(new File("src/extras/ClassroomBoss.png"));
 			} catch (IOException e) {
