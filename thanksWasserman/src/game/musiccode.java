@@ -4,6 +4,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 public class musiccode{
 void playMusic(String musicLocation){
@@ -15,11 +16,13 @@ void playMusic(String musicLocation){
       clip.open(audioInput);
       clip.start();
       clip.loop(Clip.LOOP_CONTINUOUSLY);
-      try {
+      /*try {
             Thread.sleep(200000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+      catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+      JOptionPane.showMessageDialog(null, "test");
     }
     else{
       System.out.println("bruh");
