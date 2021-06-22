@@ -15,7 +15,11 @@ void playMusic(String musicLocation){
       clip.open(audioInput);
       clip.start();
       clip.loop(Clip.LOOP_CONTINUOUSLY);
-      Thread.sleep(200000);
+      try {
+            Thread.sleep(200000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     else{
       System.out.println("bruh");
