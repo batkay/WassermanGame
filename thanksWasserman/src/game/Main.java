@@ -114,6 +114,7 @@ public class Main {
 		theInputs = new BufferedReader(new InputStreamReader(file));
 		
 		//question, answers are separated by commas so split the string by commas
+		//can only load string questions, questions stored in csv doc. kinda an oversight on my end ngl
 		String line;
 		try {
 			line = theInputs.readLine();
