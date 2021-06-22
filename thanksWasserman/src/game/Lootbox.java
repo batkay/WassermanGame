@@ -9,8 +9,8 @@ public class Lootbox extends Entity{
 		items=allItems;
 	}
 	
-	public Item roll() {
+	public EquippableItem roll() {
 		int rolled = (int)(Math.random()*items.length);
-		return items[rolled];
+		return (EquippableItem) items[rolled];
 	}
 }

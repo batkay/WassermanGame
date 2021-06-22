@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -18,6 +20,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import static game.Utilities.*;
@@ -59,6 +62,9 @@ public class Main {
 	
 	static int currentLevel=1;
 	
+	static JComboBox backpack;
+	static ProgramBox dropdownListener;
+	
 	public static void main(String[] args){
 		File save = new File("src/extras/save.txt");
 		try {
@@ -66,35 +72,13 @@ public class Main {
 				Scanner scan = new Scanner(save);
 				currentLevel=scan.nextInt();
 				scan.close();
-				//System.out.println(currentLevel);
 				
-				/*
-				FileReader reader= new FileReader(save);
-				currentLevel=reader.read();
-				System.out.println(currentLevel);
-				reader.close();
-				*/
-
-				/*
-				RandomAccessFile read= new RandomAccessFile(save, "r");
-				
-				System.out.println(read.length());
-				//read.seek(read.length());
-				currentLevel=read.readInt();
-				System.out.println(currentLevel);
-				read.close();
-				*/
 			}
 			else {
 				FileWriter writer= new FileWriter(save, false);
 				writer.write(currentLevel+"");
 				writer.close();
-				/*
-				RandomAccessFile write = new RandomAccessFile(save, "rw");
-				write.seek(0);
-				write.write(currentLevel);
-				write.close();
-				*/
+				
 			}
 		} catch (IOException e3) {
 			// TODO Auto-generated catch block
@@ -157,7 +141,7 @@ public class Main {
 			e2.printStackTrace();
 		}
 		
-		frame = new JFrame("game name");
+		frame = new JFrame("Wasserman and the 7 Textbooks");
 				
 		try {
 			p1= new Player(10, 575, 1150);
@@ -172,7 +156,9 @@ public class Main {
 			if(!items.createNewFile()) {
 				Scanner scan = new Scanner(items);
 				while(scan.hasNext()) {
+					//String daItem = scan.nextLine();
 					p1.items.add(new EquippableItem(scan.nextLine()));
+					//System.out.println(daItem);
 				}
 				scan.close();
 				
@@ -193,18 +179,11 @@ public class Main {
 		
 		firstLevel.load();
 		
-		/*
-		things.add(new Obstruction(25, 600, 50, 1200));
-		things.add(new Obstruction(1125, 600, 50, 1200));
-		things.add(new Obstruction(275, 900, 500, 50));
-		things.add(new Obstruction(875, 900, 500, 50));
-		things.add(new Obstruction(575, 1225, 1100, 50));
-
-		things.add(new Enemy(10, 575, 900));
-		*/
 		
 		Background behind = new Background(size, frame, p1, things, mice);
 		Thread background = new Thread (behind);
+		
+		behind.setLevel(currentLevel);
 		
 		Inputs keyboard= new Inputs();
 		
@@ -214,12 +193,27 @@ public class Main {
 		
 		behind.setLevel(currentLevel);
 
+		String[] itemList = new String[p1.items.size()];
+		for(int i=0; i<itemList.length; i++) {
+			itemList[i] = ((EquippableItem) p1.items.get(i)).name;
+		}
+		backpack = new JComboBox(itemList);
+		dropdownListener = new ProgramBox(p1);
+		backpack.addActionListener(dropdownListener);
+		backpack.setBounds(frame.getWidth()/16, frame.getHeight()/16, frame.getWidth()/8, frame.getHeight()/8);
+		backpack.setFocusable(false);
+		
+		frame.add(backpack);
+
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.add(behind);
 		frame.setSize(size);
 		frame.setVisible(true);
+		
+		
+		
 		
 		background.start();
 		
@@ -372,8 +366,49 @@ public class Main {
 								behind.battling=battling;
 								behind.currentEn=currentEn;
 							}
+							
+							
+							//lootboxes
 							else if(en.getClass().equals(Lootbox.class)) {
-								p1.items.add( ((Lootbox)en).roll() );
+								EquippableItem rolledItem= ((Lootbox)en).roll();
+								if(!p1.items.contains(rolledItem)) {
+									p1.items.add( rolledItem);
+									
+									FileWriter writer;
+									try {
+										writer = new FileWriter(items, true);
+										writer.write(rolledItem.name+"\n");
+										writer.close();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+									backpack.addItem(rolledItem.name);
+									
+									behind.displayTextBox("You got " + rolledItem.name + "!");
+									
+								}
+								else {
+									behind.displayTextBox("You got " + rolledItem.name + "! You already have this item");
+								}
+								
+								while(!mice.clicked) {
+									try {
+										Thread.sleep(10);
+									}
+									catch(InterruptedException e) {}
+								}
+								while(mice.clicked) {
+									
+									try {
+										Thread.sleep(10);
+									}
+									catch(InterruptedException e) {}
+								}
+								
+								
+								
 								things.remove(i);
 							}
 						}
@@ -443,25 +478,15 @@ public class Main {
 				catch(InterruptedException e) {}
 			}
 			
+			backpack.setBounds(frame.getWidth()/8, frame.getHeight()/8, frame.getWidth()/4, frame.getHeight()/4);
 			
 			behind.repaint();
-			
-			//stuck here
-			/*
-			if(battling) {
-				int initial=mice.clicks;
-				while(mice.clicks==initial) {
-					//held=true;
-					
-					try {
-						Thread.sleep(10);
-					}
-					catch(InterruptedException e) {}
-				}
+
+			if(p1.items.size()>0 && p1.equipped==null) {
+				p1.equipItem(p1.items.get(0));
 			}
-			*/
 			
-			if(battling) {
+			if(battling || behind.textBox!=null) {
 				while(!mice.clicked) {
 					try {
 						Thread.sleep(10);
@@ -480,8 +505,10 @@ public class Main {
 				}
 			}
 			
+
 			
-			behind.displayText(null);
+			//behind.displayTextBox(null);
+			//behind.displayText(null);
 			
 			try {
 				Thread.sleep(10);
@@ -491,5 +518,6 @@ public class Main {
 		}
 		
 	}
+	
 
 }

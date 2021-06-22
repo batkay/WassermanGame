@@ -26,8 +26,10 @@ public class Background extends Canvas implements Runnable {
 	
 	Enemy currentEn;
 	boolean battling=false;
+	boolean displayingMessage=false;
 	
 	String text=null;
+	String textBox=null;
 	
 	boolean pMove=false;
 	Entity aButton = new Entity (50, 50, 50, 50);
@@ -125,6 +127,7 @@ public class Background extends Canvas implements Runnable {
 		paint(g);
 	}
 	
+	
 	@Override
 	public void paint(Graphics g) {
 		int width=f.getWidth();
@@ -141,7 +144,8 @@ public class Background extends Canvas implements Runnable {
         Graphics2D bufferG=(Graphics2D) buffer.getGraphics(); //get its graphics
         
         //bufferG.drawString("x: "+ Main.p1.xPos+"\ny:" + Main.p1.yPos, 200, 205);
-        
+    	
+
        
         if(battling) {
         	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
@@ -157,6 +161,7 @@ public class Background extends Canvas implements Runnable {
         	bufferG.setColor(Color.BLACK);
         	if(text!=null) {
         		bufferG.drawString(text, factor, height*6/10);
+        		text=null;
         	}
         	
         	bufferG.setColor(Color.BLUE);
@@ -209,6 +214,9 @@ public class Background extends Canvas implements Runnable {
         			bufferG.setColor(Color.YELLOW);
         			
         		}
+        		else if(en.getClass().equals(Lootbox.class)) {
+        			bufferG.setColor(Color.GREEN);
+        		}
         		else {
         			bufferG.setColor(Color.GRAY);
 
@@ -218,20 +226,42 @@ public class Background extends Canvas implements Runnable {
             	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
             }
             
-            
+        	
+        	
+        	if(displayingMessage) {
+        		displayingMessage=false;
+        	}
+            if(textBox!=null) {
+            	bufferG.setColor(new Color(255, 201, 33));
+            	bufferG.fillRect(0, height*11/16, width, height/2);
+            	
+            	
+            	bufferG.setColor(Color.BLACK);
+            	bufferG.drawString(textBox, 20, height*6/8);
+            	
+            	displayingMessage=true;
+            	
+            	textBox=null;
+            }
+        	
             bufferG.rotate(m.angle+Math.PI/2, width/2, height/2);
             bufferG.setColor(Color.BLUE);
             //bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
         	bufferG.drawImage(p1.getPic(), width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight, this);
 
         }
-        
+        bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
+        bufferG.setColor(Color.BLACK);
+        bufferG.drawString("Current Level: " + level , width*9/10, 20);
+    	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/10, height/10);
         
         g.drawImage(buffer, 0, 0, this); //place the buffer image onto the actual
 	}
 	public void displayText(String text) {
 		this.text=text;
 	}
-	
+	public void displayTextBox(String text) {
+		textBox=text;
+	}
 
 }

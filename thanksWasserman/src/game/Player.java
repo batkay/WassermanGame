@@ -14,14 +14,14 @@ public class Player extends Entity{
 		
 	EquippableItem equipped;
 	
-	ArrayList<Item> items;
+	ArrayList<EquippableItem> items;
 	
 	double originalX;
 	double originalY;
 	
 	public Player(double hp, double xPos, double yPos) throws IOException {
 		super(xPos, yPos, 50, 50, ImageIO.read(new File("src/extras/jimmy.png")));
-		items=new ArrayList<Item>();
+		items=new ArrayList<EquippableItem>();
 		this.maxHp=hp;
 		this.hp=maxHp;
 		

@@ -21,6 +21,8 @@ public class Level {
 		things.add(new Obstruction(875, 900, 500, 50));
 		things.add(new Obstruction(575, 1225, 1100, 50));
 
+		things.add(new Lootbox(500, 500, Item.arr));
+		
 		things.add(new Enemy(level*5, 575, 900));
 		
 		p1.reset();
