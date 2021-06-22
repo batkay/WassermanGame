@@ -156,7 +156,7 @@ public class Main {
 			e2.printStackTrace();
 		}
 		
-		frame = new JFrame("Wasserman and the 7 Textbooks");
+		frame = new JFrame("Wasserman and the 15 Textbooks");
 				
 		try {
 			p1= new Player(10, 575, 1150);
