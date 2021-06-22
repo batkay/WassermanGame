@@ -23,6 +23,8 @@ public class Level {
 
 		things.add(new Lootbox(500, 500, Item.arr));
 		
+		things.add(new CreditBox( 100, 1000));
+		
 		things.add(new Enemy(level*5, 575, 900));
 		
 		p1.reset();

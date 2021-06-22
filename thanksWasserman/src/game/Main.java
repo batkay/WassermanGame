@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -66,12 +67,21 @@ public class Main {
 	static JComboBox backpack;
 	static ProgramBox dropdownListener;
 	
+	static Font script= new Font("Roboto", Font.PLAIN, (int) (size.getHeight()/50));
+	
 	public static void main(String[] args){
 		File save = new File("src/extras/save.txt");
 		try {
 			if(!save.createNewFile()) {
 				Scanner scan = new Scanner(save);
-				currentLevel=scan.nextInt();
+				if(scan.hasNext()) {
+					currentLevel=scan.nextInt();
+				}
+				else {
+					FileWriter writer= new FileWriter(save, false);
+					writer.write(currentLevel+"");
+					writer.close();
+				}
 				scan.close();
 				
 			}
@@ -176,7 +186,7 @@ public class Main {
 		firstLevel.load();
 		
 		
-		Background behind = new Background(size, frame, p1, things, mice);
+		Background behind = new Background(size, frame, p1, things, mice, script);
 		Thread background = new Thread (behind);
 		
 		behind.setLevel(currentLevel);
@@ -196,7 +206,7 @@ public class Main {
 		backpack = new JComboBox(itemList);
 		dropdownListener = new ProgramBox(p1);
 		backpack.addActionListener(dropdownListener);
-		backpack.setBounds(frame.getWidth()/16, frame.getHeight()/16, frame.getWidth()/8, frame.getHeight()/8);
+		backpack.setBounds(0, 0, frame.getWidth()/16, frame.getHeight()/16);
 		backpack.setFocusable(false);
 		
 		frame.add(backpack);
@@ -214,6 +224,8 @@ public class Main {
 		
 		
 		background.start();
+		
+		behind.requestFocus();
 		
 		while(p1.hp>0) {
 			//frame.setBackground(new Color(0, 128, 128));
@@ -431,6 +443,24 @@ public class Main {
 								
 								things.remove(i);
 							}
+							else if(en.getClass().equals(CreditBox.class)){
+								behind.displayTextBox("Credits: Thank you Wasserman!! From LHS CO-2021 Lead Graphic Designer: Ally Mintz, Lead Item Developer: Divy Jain, Question Developer: Ethan Dcosta, Lead Engine Developer: Thomas Lang");
+								System.out.println("Credits \nThank you Wasserman, From LHS CO-2021 \nLead Graphic Designer: Ally Mintz \nLead Item Developer: Divy Jain \nQuestion Developer: Ethan Dcosta \nLead Engine Developer: Thomas Lang");
+								while(!mice.clicked) {
+									try {
+										Thread.sleep(10);
+									}
+									catch(InterruptedException e) {}
+								}
+								while(mice.clicked) {
+									
+									try {
+										Thread.sleep(10);
+									}
+									catch(InterruptedException e) {}
+								}
+								
+							}
 						}
 					}
 					Player p2= new Player(p1);
@@ -486,7 +516,12 @@ public class Main {
 				catch(InterruptedException e) {}
 			}
 			
-			backpack.setBounds(frame.getWidth()/8, frame.getHeight()/8, frame.getWidth()/4, frame.getHeight()/4);
+			
+			script= new Font("Roboto", Font.PLAIN, (int) (frame.getHeight()/50));
+			behind.giveFont(script);
+			
+			backpack.setBounds(frame.getWidth()/32, frame.getHeight()/32, frame.getWidth()/8, frame.getHeight()/8);
+			backpack.setFont(script);
 			
 			behind.repaint();
 

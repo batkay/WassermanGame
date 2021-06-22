@@ -3,6 +3,7 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 //import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -51,23 +52,37 @@ public class Background extends Canvas implements Runnable {
 	Image button2;
 	Image button3;
 	
-	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m){
+	Image attackButton;
+	Image itemButton;
+	
+	Font script;
+	
+	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m, Font script){
 		setSize(s); //set the frame to an initial size
 		this.f=f; 
 		this.p1=p1;
 		this.things=things;
 		this.m=m;
+		this.script=script;
 		
 		try {
 			button0 = ImageIO.read(new File("src/extras/firstOpt.png"));
 			button1 = ImageIO.read(new File("src/extras/SecondOpt.png"));
 			button2 = ImageIO.read(new File("src/extras/thirdOpt.png"));
 			button3 = ImageIO.read(new File("src/extras/FourthOpt.png"));
+			attackButton = ImageIO.read(new File("src/extras/sword.png"));
+			itemButton = ImageIO.read(new File("src/extras/bag.png"));
+
+			
 		}
 		catch (IOException e) {
 			
 		}
 		
+	}
+	
+	public void giveFont(Font f) {
+		script=f;
 	}
 	
 	public void setEnemy(Enemy en) {
@@ -142,6 +157,7 @@ public class Background extends Canvas implements Runnable {
 		
 		Image buffer=createImage(f.getWidth(), f.getHeight()); //create a new image to draw on
         Graphics2D bufferG=(Graphics2D) buffer.getGraphics(); //get its graphics
+        bufferG.setFont(script);
 		bufferG.setColor(new Color(177, 255, 255));
 
         bufferG.fillRect(0, 0, width, height);
@@ -156,8 +172,8 @@ public class Background extends Canvas implements Runnable {
         	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
         	int enWidth = p1.width*factor * 2;
         	
-        	aButton = new Entity (width/10, height*18/20-factor*50, factor*2*50, factor * 2 *50);
-        	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50);
+        	aButton = new Entity (width/10, height*18/20-factor*50, factor*2*50, factor * 2 *50, attackButton);
+        	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50, itemButton);
         	
         	
         	bufferG.setColor(Color.YELLOW);
@@ -180,9 +196,14 @@ public class Background extends Canvas implements Runnable {
         	bufferG.fillRect(pWidth, height/8, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
         	
         	if(pMove) {
+        		bufferG.drawImage(aButton.pic, (int)(aButton.x-aButton.width/2), (int)(aButton.y-aButton.height/2), aButton.width, aButton.height,this);
+        		bufferG.drawImage(iButton.pic, (int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height,this);
+
+        		/*
         		bufferG.setColor(Color.CYAN);
             	bufferG.fillRect((int)(aButton.x-aButton.width/2), (int)(aButton.y-aButton.height/2), aButton.width, aButton.height);
             	bufferG.fillRect((int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height);
+            	*/
         	}
         	
         	if(askedQ) {
@@ -215,20 +236,38 @@ public class Background extends Canvas implements Runnable {
         }
         else {
         	for(Entity en: things) {
+        		boolean hasPic=false;
+            	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
+            	
         		if(en.getClass().equals(Enemy.class)) {
+        			Enemy eni = (Enemy) en;
+        			if(eni.pic != null) {
+        				hasPic=true;
+        				bufferG.drawImage(eni.pic, relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor, this);
+        			}
         			bufferG.setColor(Color.YELLOW);
         			
         		}
         		else if(en.getClass().equals(Lootbox.class)) {
+        			Lootbox box = (Lootbox) en;
+        			if(box.pic != null) {
+        				hasPic=true;
+        				bufferG.drawImage(box.pic, relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor, this);
+        			}
         			bufferG.setColor(Color.GREEN);
+        		}
+        		else if(en.getClass().equals(CreditBox.class)) {
+        			bufferG.setColor(Color.BLUE);
         		}
         		else {
         			bufferG.setColor(new Color(249, 192, 216));
 
         		}
         		
-            	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
-            	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
+        		if(!hasPic) {
+                	bufferG.fillRect(relP.x*factor -en.width/2 +width/2, relP.y* factor -en.height/2 +height/2, en.width*factor, en.height*factor);
+
+        		}
             }
             
         	

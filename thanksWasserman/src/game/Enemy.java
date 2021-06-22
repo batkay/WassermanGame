@@ -39,7 +39,7 @@ public class Enemy extends Entity{
 			name = "Genesis";
 			moveset = new Moves[2];
 			moveset[0] = new Moves(15, "There has been an update to assignments and grades in Gradebook");
-			moveset[1] = new Moves(12, "The gradebook is not availible currently");
+			moveset[1] = new Moves(12, "The gradebook is not available currently");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/GenesisBoss.png"));
@@ -59,6 +59,18 @@ public class Enemy extends Entity{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		else {
+			name = "Google Classroom";
+			moveset= new Moves[1];
+			moveset[0]= new Moves(5, "A new assignment has been posted");
+			try {
+				this.pic = ImageIO.read(new File("src/extras/ClassroomBoss.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 	}
