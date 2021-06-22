@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -142,6 +143,8 @@ public class Main {
 		}
 		
 		frame = new JFrame("Wasserman and the 7 Textbooks");
+		//frame.setBackground(new Color(0, 128, 128));
+
 				
 		try {
 			p1= new Player(10, 575, 1150);
@@ -207,18 +210,21 @@ public class Main {
 
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		//frame.setBackground(new Color(0, 128, 128));
+
 		frame.add(behind);
+		
 		frame.setSize(size);
 		frame.setVisible(true);
 		
-		
+		//frame.setBackground(new Color(0, 128, 128));
 		
 		
 		background.start();
 		
 		while(p1.hp>0) {
-			
+			//frame.setBackground(new Color(0, 128, 128));
+
 			if(battling) {
 				if(p1.hp>0 && currentEn.hp>0) {
 					if(enemyMove) {

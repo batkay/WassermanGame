@@ -142,10 +142,15 @@ public class Background extends Canvas implements Runnable {
 		
 		Image buffer=createImage(f.getWidth(), f.getHeight()); //create a new image to draw on
         Graphics2D bufferG=(Graphics2D) buffer.getGraphics(); //get its graphics
+		bufferG.setColor(new Color(177, 255, 255));
+
+        bufferG.fillRect(0, 0, width, height);
+    	//bufferG.setBackground(new Color(0, 128, 128));
+
         
         //bufferG.drawString("x: "+ Main.p1.xPos+"\ny:" + Main.p1.yPos, 200, 205);
     	
-
+        bufferG.setColor(Color.GRAY);
        
         if(battling) {
         	int enHeight = p1.height * factor * 2; //want enemy to be same size as player on screen, reguardless of how big enemy is
@@ -218,7 +223,7 @@ public class Background extends Canvas implements Runnable {
         			bufferG.setColor(Color.GREEN);
         		}
         		else {
-        			bufferG.setColor(Color.GRAY);
+        			bufferG.setColor(new Color(249, 192, 216));
 
         		}
         		
@@ -253,8 +258,12 @@ public class Background extends Canvas implements Runnable {
         bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
         bufferG.setColor(Color.BLACK);
         bufferG.drawString("Current Level: " + level , width*9/10, 20);
-    	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/10, height/10);
-        
+        if(p1.equipped!=null) {
+        	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/10, height/10);
+
+        }
+		//bufferG.setBackground(new Color(0, 128, 128));
+
         g.drawImage(buffer, 0, 0, this); //place the buffer image onto the actual
 	}
 	public void displayText(String text) {
