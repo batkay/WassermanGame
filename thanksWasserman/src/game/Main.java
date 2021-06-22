@@ -227,12 +227,14 @@ public class Main {
 		frame.setVisible(true);
 				
 		
-		behind.requestFocus();
 		
 		//music setup
 		String filepath = "src/extras/fighting.wav";
 		behind.playMusic(filepath);
 		music.start();
+		
+		behind.requestFocus();
+
 		
 		//and the game starts!
 		while(p1.hp>0) {

@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 //import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -217,7 +218,24 @@ public class Background extends Canvas implements Runnable {
         	//display any messages
         	bufferG.setColor(Color.BLACK);
         	if(text!=null) {
-        		bufferG.drawString(text, factor, height*6/10);
+        		ArrayList<String> textSplit=new ArrayList();
+        		String editedText=text;
+        		//System.out.println(editedText.length() +" and "+ script.getSize() + " and " + f.getWidth());
+        		while(editedText.length()*script.getSize()/2>f.getWidth()) {
+        			textSplit.add(editedText.substring(0, (int)(f.getWidth()/script.getSize()*2)));
+        			editedText=editedText.substring((int)(f.getWidth()/script.getSize()*2));
+        		}
+        		textSplit.add(editedText);
+        		for(int i=0; i<textSplit.size(); i++) {
+            		bufferG.drawString(textSplit.get(i), factor, height*6/10 + script.getSize()*i);
+
+        		}
+        		/*
+        		if(textSplit.size()<1) {
+            		bufferG.drawString(text, factor, height*6/10);
+
+        		}
+        		*/
         		//text=null;
         	}
         	
@@ -316,27 +334,50 @@ public class Background extends Canvas implements Runnable {
             
         	
         	//if there is a message to draw, draw it in an orange box
-        	if(displayingMessage) {
-        		displayingMessage=false;
-        	}
-            if(textBox!=null) {
-            	bufferG.setColor(new Color(255, 201, 33));
-            	bufferG.fillRect(0, height*11/16, width, height/2);
-            	
-            	
-            	bufferG.setColor(Color.BLACK);
-            	bufferG.drawString(textBox, 20, height*6/8);
-            	
-            	displayingMessage=true;
-            	
-            	//textBox=null;
-            }
+        	
         	
             bufferG.rotate(m.angle+Math.PI/2, width/2, height/2);
             bufferG.setColor(Color.BLUE);
             //bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
         	bufferG.drawImage(p1.getPic(), width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight, this);
             bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
+        }
+        
+        if(displayingMessage) {
+    		displayingMessage=false;
+    	}
+        if(textBox!=null) {
+        	ArrayList<String> textSplit=new ArrayList();
+    		String editedText=textBox;
+    		//System.out.println(editedText.length() +" and "+ script.getSize() + " and " + f.getWidth());
+    		while(editedText.length()*script.getSize()/2>f.getWidth()) {
+    			textSplit.add(editedText.substring(0, (int)(f.getWidth()/script.getSize()*2)));
+    			editedText=editedText.substring((int)(f.getWidth()/script.getSize()*2));
+    		}
+    		textSplit.add(editedText);
+    		
+        	
+        	bufferG.setColor(new Color(255, 201, 33));
+        	bufferG.fillRect(0, height*11/16, width, height/2);
+        	
+        	bufferG.setColor(Color.BLACK);
+
+        	for(int i=0; i<textSplit.size(); i++) {
+        		bufferG.drawString(textSplit.get(i), factor, height*6/8 + script.getSize()*i);
+
+    		}
+        	/*
+    		if(textSplit.size()<1) {
+        		bufferG.drawString(textBox, factor, height*6/10);
+
+    		}
+    		*/
+    		
+        	//bufferG.drawString(textBox, 20, height*6/8);
+        	
+        	displayingMessage=true;
+        	
+        	//textBox=null;
         }
         
         //display the current level and item equipped
