@@ -23,9 +23,9 @@ public class Enemy extends Entity{
 			name="CollegeBoard";
 			
 			moveset= new Moves[3];
-			moveset[0] = new Moves(15, "Non-profit");
-			moveset[1] = new Moves(8, "Grandfather picks up quartz and valuable onyx jewels");
-			moveset[2] = new Moves(4, "CollegeBoard is watching");
+			moveset[0] = new Moves(22, "Non-profit");
+			moveset[1] = new Moves(12, "Grandfather picks up quartz and valuable onyx jewels");
+			moveset[2] = new Moves(6, "CollegeBoard is watching");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/CollegeboardBoss.png"));
