@@ -259,7 +259,8 @@ public class Main {
 								if(p1.equipped!=null) {
 									bonusA=p1.equipped.atk;
 								}
-								playerSpell=new Moves((int)( 5+bonusA * Math.random()), "Textbook Slap");
+								
+								playerSpell=new Moves((int)( 5+bonusA*.4 + bonusA *Math.random() * .6), "Textbook Slap");
 
 							}
 							else if(mice.clicked && contains(mice.click, behind.getI())) {
