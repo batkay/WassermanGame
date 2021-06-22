@@ -23,9 +23,10 @@ public class Enemy extends Entity{
 			name="CollegeBoard";
 			
 			moveset= new Moves[3];
+
 			moveset[0] = new Moves(15, "Non-profit");
-			moveset[1] = new Moves(10, "Grandfather picks up quartz and valuable onyx jewels");
-			moveset[2] = new Moves(17, "CollegeBoard is watching");
+			moveset[1] = new Moves(17, "Grandfather picks up quartz and valuable onyx jewels");
+			moveset[2] = new Moves(10, "CollegeBoard is watching");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/CollegeboardBoss.png"));
@@ -51,7 +52,7 @@ public class Enemy extends Entity{
 			name = "Schoology";
 			moveset = new Moves[2];
 			moveset[0]= new Moves(7, "Schoology is currently unavailible");
-			moveset[1]=new Moves(3, "Lori Perez has liked your post");
+			moveset[1]=new Moves(5, "Lori Perez has liked your post");
 			try {
 				this.pic = ImageIO.read(new File("src/extras/SchoologyBoss.png"));
 			} catch (IOException e) {
