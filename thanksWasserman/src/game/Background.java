@@ -218,7 +218,7 @@ public class Background extends Canvas implements Runnable {
         	bufferG.setColor(Color.BLACK);
         	if(text!=null) {
         		bufferG.drawString(text, factor, height*6/10);
-        		text=null;
+        		//text=null;
         	}
         	
         	//draw Jimmy the Java
@@ -272,7 +272,7 @@ public class Background extends Canvas implements Runnable {
                 	bufferG.drawImage(button.getPic(), (int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height, this);
             	}
             	
-        		askedQ=false;
+        		//askedQ=false;
         	}
         	
         }
@@ -329,7 +329,7 @@ public class Background extends Canvas implements Runnable {
             	
             	displayingMessage=true;
             	
-            	textBox=null;
+            	//textBox=null;
             }
         	
             bufferG.rotate(m.angle+Math.PI/2, width/2, height/2);

@@ -137,11 +137,12 @@ public class Main {
 						reconstructed=reconstructed+words[i];
 						
 						
-						while(reconstructed.contains("|")) {
-							reconstructed = reconstructed.substring(0, reconstructed.indexOf("|")) + "," + reconstructed.substring(reconstructed.indexOf("|")+1);
-						}
+						
 						words[i]=reconstructed;
 						
+					}
+					while(words[i].contains("@")) {
+						words[i] = words[i].substring(0, words[i].indexOf("@")) + "," + words[i].substring(words[i].indexOf("@")+1);
 					}
 				}
 				
@@ -353,6 +354,7 @@ public class Main {
 								catch(InterruptedException e) {}
 							}
 							
+							behind.askedQ=false;
 							//check if the answer is right, if not change dmg they do to 0
 							if(answer==spot) {
 								
@@ -576,6 +578,9 @@ public class Main {
 				
 			}
 			catch(InterruptedException e) {}
+			
+			behind.displayText(null);
+			behind.displayTextBox(null);
 		}
 		behind.displayTextBox("You Died");
 		behind.repaint();
