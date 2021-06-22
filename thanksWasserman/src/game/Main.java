@@ -223,6 +223,10 @@ public class Main {
 		
 		behind.requestFocus();
 		
+		//music setup
+		String filepath = "fighting.mp3";
+		musiccode Music = new musiccode();
+		musicObject.playMusic(filepath);
 		
 		//and the game starts!
 		while(p1.hp>0) {
