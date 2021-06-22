@@ -21,9 +21,6 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Scanner;
-import sun.audio.AudioStream;
-import sun.audio.AudioPlayer
-import javax.swing.JOptionPane;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -575,15 +572,6 @@ public class Main {
 		behind.repaint();
 		
 	}
-	public static void playMusic(String filepath){
-		InputStream music;
-		try{
-			music = new FileInputStream(new File(filepath));
-			AudioStream audios = new AudioStream(music);
-			AudioPlayer.player.start(audios);
-		}
-		catch(Exception e){
-			JOptionPane.showMessageDialog(null, "Error");
-	}
+	
 
 }
