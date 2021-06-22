@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 public class Player extends Entity{
 	double hp;
 	double maxHp;
+	double baseHp;
 	double moveSpeed=10;
 		
 	EquippableItem equipped;
@@ -23,6 +24,7 @@ public class Player extends Entity{
 		super(xPos, yPos, 50, 50, ImageIO.read(new File("src/extras/jimmy.png")));
 		items=new ArrayList<EquippableItem>();
 		this.maxHp=hp;
+		baseHp=maxHp;
 		this.hp=maxHp;
 		
 		originalX=xPos;
@@ -76,7 +78,16 @@ public class Player extends Entity{
 		}
 		this.items.add(this.equipped);
 		this.equipped = e;
-		this.items.remove(e);
+		//this.items.remove(e);
+		
+		double difference = maxHp-hp;
+		
+		maxHp=baseHp;
+		maxHp+=e.hp;
+		hp=maxHp-hp;
+		if(hp<1) {
+			hp=1;
+		}
 	}
 	
 	public void reset() {

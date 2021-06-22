@@ -125,15 +125,10 @@ public class Main {
 						reconstructed=reconstructed+words[i];
 						
 						words[i]=reconstructed;
-						/*
-						while(words[i].contains("\"\"")) {
-							words[i]=words[i].substring(0, words[i].indexOf("\"\""))+"\"" +words[i].substring(words[i].indexOf("\"\"")+2);
-						}
-						*/
+						
 					}
 				}
 				questions.add(words);
-				//questions.add(line.split(","));
 				
 				line=theInputs.readLine();
 			}
@@ -143,8 +138,6 @@ public class Main {
 		}
 		
 		frame = new JFrame("Wasserman and the 7 Textbooks");
-		//frame.setBackground(new Color(0, 128, 128));
-
 				
 		try {
 			p1= new Player(10, 575, 1150);
@@ -226,11 +219,15 @@ public class Main {
 			//frame.setBackground(new Color(0, 128, 128));
 
 			if(battling) {
+				backpack.setVisible(false);
 				if(p1.hp>0 && currentEn.hp>0) {
 					if(enemyMove) {
 						Moves enemySpell = currentEn.moveset[(int) (Math.random()*currentEn.moveset.length)];
-						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + enemySpell.damage + " damage");
-						p1.hp-=enemySpell.damage;
+						
+						//double damageTaken = enemySpell.damage/Math.log(p1.equipped.def);
+						double damageTaken = enemySpell.damage * (1 - ((Math.log(p1.equipped.def+1)*1)/6));
+						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + damageTaken + " damage");
+						p1.hp-=damageTaken;
 					}
 					else {
 						//behind.displayText("sheesh");
@@ -246,11 +243,19 @@ public class Main {
 						while(playerSpell==null) {
 							
 							if(mice.clicked && contains(mice.click, behind.getA())) {
-								playerSpell=new Moves(5, "attack");
+								int bonusA=0;
+								if(p1.equipped!=null) {
+									bonusA=p1.equipped.atk;
+								}
+								playerSpell=new Moves((int)( 5+bonusA * Math.random()), "Textbook Slap");
 
 							}
 							else if(mice.clicked && contains(mice.click, behind.getI())) {
-								playerSpell=new Moves(1, "Item");
+								int bonusA=0;
+								if(p1.equipped!=null) {
+									bonusA=p1.equipped.atk;
+								}
+								playerSpell=new Moves(-Math.round(bonusA/2), "Item");
 
 							}
 							
@@ -269,7 +274,7 @@ public class Main {
 						
 						
 						//if they chose to answer a question
-						if(playerSpell.name.equals("attack")) {
+						if(playerSpell.name.equals("Textbook Slap")) {
 							
 							int q=(int) (Math.random()*questions.size());
 							// put question logic here
@@ -328,13 +333,20 @@ public class Main {
 								
 							}
 							else {
-								playerSpell= new Moves(0, "Wrong");
+								playerSpell= new Moves(0, "Wrong Answer");
 							}
 							
 						}
 						
+						if(playerSpell.damage>0) {
+							behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
+
+						}
+						else {
+							behind.displayText("You used " + playerSpell.name + ". It healed " + playerSpell.damage + " damage");
+
+						}
 						
-						behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
 						currentEn.hp-=playerSpell.damage;
 
 						
@@ -354,6 +366,8 @@ public class Main {
 			}
 			
 			else {
+				backpack.setVisible(true);
+				
 				int veloX=p1.updateX(keyboard);
 				int veloY=p1.updateY(keyboard);
 				
@@ -438,18 +452,6 @@ public class Main {
 				p1.x+=veloX;
 				p1.y+=veloY;
 				
-				/*
-				if(mice.clicked) {
-					for(Entity en: things) {
-						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.click.x, mice.click.y, en.x, en.y, en.width, en.height)) {
-							if(en.getClass().equals(Enemy.class)) {
-								currentEn= (Enemy) en;
-							}
-						}
-						
-					}
-				}
-				*/
 			}
 			
 			//removes dead enemies

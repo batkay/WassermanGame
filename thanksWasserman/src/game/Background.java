@@ -253,9 +253,9 @@ public class Background extends Canvas implements Runnable {
             bufferG.setColor(Color.BLUE);
             //bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
         	bufferG.drawImage(p1.getPic(), width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight, this);
+            bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
 
         }
-        bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
         bufferG.setColor(Color.BLACK);
         bufferG.drawString("Current Level: " + level , width*9/10, 20);
         if(p1.equipped!=null) {
