@@ -114,6 +114,7 @@ public class Main {
 		
 		//question, answers are separated by commas so split the string by commas
 		//can only load string questions, questions stored in csv doc. kinda an oversight on my end ngl
+		//IN ORDER TO PUT MORE QUESTIONS, COMMAS IN THE QUESTION MUST BE REPLACED WITH THE @ SYMBOL
 		String line;
 		try {
 			line = theInputs.readLine();
