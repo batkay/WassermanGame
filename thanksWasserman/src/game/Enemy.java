@@ -49,7 +49,7 @@ public class Enemy extends Entity{
 		}
 		else if (hp >= 25) {
 			name = "Schoology";
-			moveset = new Moves[1];
+			moveset = new Moves[2];
 			moveset[0]= new Moves(4, "Schoology is currently unavailible");
 			moveset[1]=new Moves(2, "Lori Perez has liked your post");
 			try {
@@ -61,7 +61,7 @@ public class Enemy extends Entity{
 		}
 		else {
 			name = "Google Classroom";
-			moveset= new Moves[1];
+			moveset= new Moves[2];
 			moveset[0]= new Moves(1, "A new assignment has been posted");
 			moveset[1]=new Moves(2, "Overdue assignments: 1");
 			try {
