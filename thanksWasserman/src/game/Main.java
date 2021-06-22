@@ -235,6 +235,25 @@ public class Main {
 		
 		behind.requestFocus();
 
+		if(currentLevel==1) {
+			behind.displayTextBox("Hi, and welcome to Wasserman and the 15 textbooks! In this world, you must defeat the evils roaming the world, while collecting textbooks that boost your stats. In order to attack, you must answer an AP Comp Sci MC question correctly. Good Luck and Have fun!");
+			behind.repaint();
+			while(!mice.clicked) {
+				try {
+					Thread.sleep(10);
+				}
+				catch(InterruptedException e) {}
+			}
+			while(mice.clicked) {
+				
+				try {
+					Thread.sleep(10);
+				}
+				catch(InterruptedException e) {}
+			}
+			behind.displayTextBox(null);
+		}
+		
 		
 		//and the game starts!
 		while(p1.hp>0) {
