@@ -23,9 +23,9 @@ public class Enemy extends Entity{
 			name="CollegeBoard";
 			
 			moveset= new Moves[3];
-			moveset[0] = new Moves(20, "Non-profit");
-			moveset[1] = new Moves(19, "Grandfather picks up quartz and valuable onyx jewels");
-			moveset[2] = new Moves(22, "CollegeBoard is watching");
+			moveset[0] = new Moves(15, "Non-profit");
+			moveset[1] = new Moves(8, "Grandfather picks up quartz and valuable onyx jewels");
+			moveset[2] = new Moves(4, "CollegeBoard is watching");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/CollegeboardBoss.png"));
@@ -37,8 +37,8 @@ public class Enemy extends Entity{
 		else if (hp >= 50){
 			name = "Genesis";
 			moveset = new Moves[2];
-			moveset[0] = new Moves(15, "There has been an update to assignments and grades in Gradebook");
-			moveset[1] = new Moves(12, "The gradebook is not available at this time.");
+			moveset[0] = new Moves(7, "There has been an update to assignments and grades in Gradebook");
+			moveset[1] = new Moves(5, "The gradebook is not available at this time.");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/GenesisBoss.png"));
@@ -50,8 +50,8 @@ public class Enemy extends Entity{
 		else if (hp >= 25) {
 			name = "Schoology";
 			moveset = new Moves[1];
-			moveset[0]= new Moves(9, "Schoology is currently unavailible");
-			
+			moveset[0]= new Moves(4, "Schoology is currently unavailible");
+			moveset[1]=new Moves(2, "Lori Perez has liked your post");
 			try {
 				this.pic = ImageIO.read(new File("src/extras/SchoologyBoss.png"));
 			} catch (IOException e) {
@@ -62,7 +62,8 @@ public class Enemy extends Entity{
 		else {
 			name = "Google Classroom";
 			moveset= new Moves[1];
-			moveset[0]= new Moves(5, "A new assignment has been posted");
+			moveset[0]= new Moves(1, "A new assignment has been posted");
+			moveset[1]=new Moves(2, "Overdue assignments: 1");
 			try {
 				this.pic = ImageIO.read(new File("src/extras/ClassroomBoss.png"));
 			} catch (IOException e) {
