@@ -223,7 +223,7 @@ public class Main {
 		behind.requestFocus();
 		
 		//music setup
-		String filepath = "fighting.wav";
+		String filepath = "src/extras/fighting.wav";
 		musiccode Music = new musiccode();
 		Music.playMusic(filepath);
 		
