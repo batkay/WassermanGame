@@ -3,7 +3,7 @@ What stores a non-whole number value?,Double,Boolean,String,Integer
 1.0/2=,0.5,0,1,NaN
 """200""+(10+1)","""20011""",20011,211,209
 If a and b are integers| (a < b) && !(b > a) is,never true,Always true,a=b,a>b
-Which of the following statements about interfaces is (are) true? I. One interface can inherit from another II. All methods declared in an interface are abstract methods (can’t have a method body). III. All methods declared in an interface are public methods.,I| II| and III,III only,I and II only,II only
+Which of the following statements about interfaces is (are) true? I. One interface can inherit from another II. All methods declared in an interface are abstract methods (can't have a method body). III. All methods declared in an interface are public methods.,I| II| and III,III only,I and II only,II only
 Which of the following is (are) true? I. Insertion sort takes longer when the array is sorted in ascending order and you want it sorted in descending order. II. Mergesort uses recursion. III. Selection sort takes less time to execute if the array is already sorted in the correct order.,I and II only,II only,III only,I only
 Which one of the following doesn't require an additional import statement to use?,Strings,Arrays,Array Lists,Scanner
 Which of the following statements assigns a random integer between 25 and 60| inclusive| to the int rn?,int rn = (int) (Math.random() * 36) + 25;,int rn = (int) (Math.random() * 25) + 60;,int rn = (int) (Math.random() * 60) + 25;,int rn = (int) (Math.random() * 25) + 36;
