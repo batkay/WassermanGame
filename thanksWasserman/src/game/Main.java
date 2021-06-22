@@ -235,8 +235,11 @@ public class Main {
 					if(enemyMove) {
 						//enemy chooses one of their moves at random and it does dmg based on complex math formula including player defense stat
 						Moves enemySpell = currentEn.moveset[(int) (Math.random()*currentEn.moveset.length)];
-						
-						double damageTaken = round1000( enemySpell.damage * (1 - ((Math.log(p1.equipped.def+1)*1)/6)) );
+						double defense = 1;
+						if(p1.equipped!=null) {
+							defense+=p1.equipped.def;
+						}
+						double damageTaken = round1000( enemySpell.damage * (1 - ((Math.log(defense)*1)/6)) );
 						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + damageTaken + " damage");
 						p1.hp-=damageTaken;
 					}
@@ -353,14 +356,16 @@ public class Main {
 						//display dmg
 						if(playerSpell.damage>0) {
 							behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
+							currentEn.hp-=playerSpell.damage;
+
 
 						}
 						else {
-							behind.displayText("You used " + playerSpell.name + ". It healed " + playerSpell.damage + " damage");
+							behind.displayText("You used " + playerSpell.name + ". It healed " + Math.abs(playerSpell.damage) + " health");
+							p1.hp+=Math.abs(playerSpell.damage);
 
 						}
 						
-						currentEn.hp-=playerSpell.damage;
 
 						
 					}
@@ -449,8 +454,8 @@ public class Main {
 							}
 							//if clicked on blue box, display game credits
 							else if(en.getClass().equals(CreditBox.class)){
-								behind.displayTextBox("Credits: Thank you Wasserman!! From LHS CO-2021 Lead Graphic Designer: Ally Mintz, Lead Item Developer: Divy Jain, Question Developer: Ethan Dcosta, Lead Engine Developer: Thomas Lang");
-								//System.out.println("Credits \nThank you Wasserman, From LHS CO-2021 \nLead Graphic Designer: Ally Mintz \nLead Item Developer: Divy Jain \nQuestion Developer: Ethan Dcosta \nLead Engine Developer: Thomas Lang");
+								behind.displayTextBox("Credits: Thank you Wasserman!! From LHS CO-2021 Graphic Designer: Ally Mintz, Developer: Divy Jain, Developer: Ethan Dcosta, Developer: Thomas Lang");
+								//System.out.println("Credits \nThank you Wasserman, From LHS CO-2021 \nGraphic Designer: Ally Mintz \nDeveloper: Divy Jain \nDeveloper: Ethan Dcosta \nDeveloper: Thomas Lang");
 								while(!mice.clicked) {
 									try {
 										Thread.sleep(10);
@@ -562,6 +567,8 @@ public class Main {
 			}
 			catch(InterruptedException e) {}
 		}
+		behind.displayTextBox("You Died");
+		behind.repaint();
 		
 	}
 	
