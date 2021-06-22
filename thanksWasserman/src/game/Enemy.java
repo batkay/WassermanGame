@@ -12,8 +12,7 @@ public class Enemy extends Entity{
 	double maxHp;
 	Moves[] moveset;
 	
-	//Image pic;
-	
+	//bad guys are defined by how much hp they have. 
 	String name;
 	public Enemy(double hp, double x, double y) {
 		super(x, y, 50, 50);
@@ -39,7 +38,7 @@ public class Enemy extends Entity{
 			name = "Genesis";
 			moveset = new Moves[2];
 			moveset[0] = new Moves(15, "There has been an update to assignments and grades in Gradebook");
-			moveset[1] = new Moves(12, "The gradebook is not available currently");
+			moveset[1] = new Moves(12, "The gradebook is not available at this time.");
 			
 			try {
 				this.pic = ImageIO.read(new File("src/extras/GenesisBoss.png"));

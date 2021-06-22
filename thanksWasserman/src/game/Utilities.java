@@ -3,6 +3,9 @@ package game;
 import java.awt.Point;
 
 public class Utilities {
+	/*
+	 * Just some mathematical methods that might be used a lot
+	 */
 	public static Point screenToGlobal(double px, double py, double mx, double my, double width, double height) {
 		//converts a point on the screen to a point in global xy plane
 		
@@ -54,5 +57,8 @@ public class Utilities {
 	public static boolean touchesY (Entity en1, Entity en2) {
 		return ! (en1.y+en1.height/2<= en2.y-en2.height/2 || en1.y-en1.height/2 >= en2.y+en2.height/2);
 	}
-	
+    public static double round1000(double num){
+        return Math.round(num*1000.0)/1000.0;
+    }
+
 }

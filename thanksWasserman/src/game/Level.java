@@ -3,6 +3,9 @@ package game;
 import java.util.List;
 
 public class Level {
+	/*Class that just loads the environment in
+	 * If you want to make different levels possible, edit the load method and put if statements based on what level is put in cunstructor
+	 */
 	Player p1;
 	List<Entity> things;
 	int level;

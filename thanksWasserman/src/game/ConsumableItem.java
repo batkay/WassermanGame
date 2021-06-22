@@ -1,7 +1,9 @@
 package game;
 
 public class ConsumableItem implements Item {
-	
+	/*
+	 * Unfinished project
+	 */
 	int hpEffect;
 	String message;
 	final String name;

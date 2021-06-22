@@ -7,6 +7,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class Lootbox extends Entity{
+	//gives random item when rolled
 	Item[] items;
 	public Lootbox(int x, int y, Item[] allItems) {
 		super(x, y, 50, 50);

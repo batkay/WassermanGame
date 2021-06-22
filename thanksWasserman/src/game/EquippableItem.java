@@ -1,7 +1,9 @@
 package game;
 
 public class EquippableItem implements Item {
-	
+	/*Class that just stores item properties of equippables
+	 * 
+	 */
 	int atk;
 	int def;
 	int hp;
@@ -28,6 +30,7 @@ public class EquippableItem implements Item {
 				return;
 			}
 		}
+		//something must have gone wrong lmao if this shows up
 		this.atk = 0;
 		this.def = 0;
 		this.hp = 0;
@@ -38,7 +41,6 @@ public class EquippableItem implements Item {
 	@Override
 	public void use(Player p) {
 		p.equipItem(this);
-		// TODO add equip text output
 	}
 	
 	@Override

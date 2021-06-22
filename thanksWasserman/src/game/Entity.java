@@ -4,6 +4,9 @@ import java.awt.Image;
 import java.io.File;
 
 public class Entity {
+	/*
+	 * Just a class to make things that show up on screen off of
+	 */
 	double x;
 	double y;
 	int width;

@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 
 public class ProgramBox implements ActionListener {
+	/*
+	 * Just to check if box gets pressed
+	 */
 	Player p1;
 	public ProgramBox(Player p1) {
 		this.p1=p1;

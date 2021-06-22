@@ -28,7 +28,11 @@ import javax.swing.JFrame;
 import static game.Utilities.*;
 
 public class Main {
-
+	/* Welcome to our very poorly written spaghetti code.
+	 * Thanks again Mr. Wasserman for everything
+	 */
+	
+	//declaring variables + frames + data input streams to be used later
 	static JFrame frame;
 	static final Dimension size= new Dimension (1280, 720);
 	
@@ -70,6 +74,7 @@ public class Main {
 	static Font script= new Font("Roboto", Font.PLAIN, (int) (size.getHeight()/50));
 	
 	public static void main(String[] args){
+		//get the player's save file and find what level they are on
 		File save = new File("src/extras/save.txt");
 		try {
 			if(!save.createNewFile()) {
@@ -92,13 +97,11 @@ public class Main {
 				
 			}
 		} catch (IOException e3) {
-			// TODO Auto-generated catch block
 			e3.printStackTrace();
 		}
 		
 		
-		
-		
+		//grab the list of questions from our csv doc
 		try {
 			questionFile= "src/extras/questions.csv";
 			file= new FileInputStream (questionFile);
@@ -107,17 +110,16 @@ public class Main {
 		catch (FileNotFoundException e){
 			System.out.println("oof");
 		}
-		
-		//d= new DataInputStream(file);
-		
+				
 		theInputs = new BufferedReader(new InputStreamReader(file));
 		
-		
+		//question, answers are separated by commas so split the string by commas
 		String line;
 		try {
 			line = theInputs.readLine();
 			while(line!=null) {
 				String[] words= line.split(",");
+				//csv files display "" differently so do some string manipulation to fix this 
 				for(int i=0; i<words.length; i++) {
 					if(words[i].contains("\"")) {
 						words[i]=(String) words[i].subSequence(1, words[i].length()-1);
@@ -138,12 +140,12 @@ public class Main {
 						
 					}
 				}
-				questions.add(words);
 				
+				//add words to the list
+				questions.add(words);
 				line=theInputs.readLine();
 			}
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		
@@ -152,19 +154,17 @@ public class Main {
 		try {
 			p1= new Player(10, 575, 1150);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		//get items from file
+		
+		//like before, get player items from file
 		File items = new File("src/extras/items.txt");
 		try {
 			if(!items.createNewFile()) {
 				Scanner scan = new Scanner(items);
 				while(scan.hasNext()) {
-					//String daItem = scan.nextLine();
 					p1.items.add(new EquippableItem(scan.nextLine()));
-					//System.out.println(daItem);
 				}
 				scan.close();
 				
@@ -179,16 +179,15 @@ public class Main {
 		
 		things= new ArrayList<>();
 		
+		//make a new level and load all the objects placed in the level
 		Level firstLevel= new Level(currentLevel, things, p1);
 
 		mice= new MouseInputs(frame, p1);
 		
 		firstLevel.load();
 		
-		
+		//setup the drawing object
 		Background behind = new Background(size, frame, p1, things, mice, script);
-		Thread background = new Thread (behind);
-		
 		behind.setLevel(currentLevel);
 		
 		Inputs keyboard= new Inputs();
@@ -199,6 +198,7 @@ public class Main {
 		
 		behind.setLevel(currentLevel);
 
+		//put list of items into a drop down box, display box
 		String[] itemList = new String[p1.items.size()];
 		for(int i=0; i<itemList.length; i++) {
 			itemList[i] = ((EquippableItem) p1.items.get(i)).name;
@@ -213,37 +213,34 @@ public class Main {
 
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setBackground(new Color(0, 128, 128));
 
 		frame.add(behind);
 		
 		frame.setSize(size);
 		frame.setVisible(true);
-		
-		//frame.setBackground(new Color(0, 128, 128));
-		
-		
-		background.start();
+				
 		
 		behind.requestFocus();
 		
+		
+		//and the game starts!
 		while(p1.hp>0) {
-			//frame.setBackground(new Color(0, 128, 128));
-
+			//battling phase, hide dropdown
 			if(battling) {
 				backpack.setVisible(false);
 				if(p1.hp>0 && currentEn.hp>0) {
+					
+					//moves r split into enemy and player moves
 					if(enemyMove) {
+						//enemy chooses one of their moves at random and it does dmg based on complex math formula including player defense stat
 						Moves enemySpell = currentEn.moveset[(int) (Math.random()*currentEn.moveset.length)];
 						
-						//double damageTaken = enemySpell.damage/Math.log(p1.equipped.def);
-						double damageTaken = enemySpell.damage * (1 - ((Math.log(p1.equipped.def+1)*1)/6));
+						double damageTaken = round1000( enemySpell.damage * (1 - ((Math.log(p1.equipped.def+1)*1)/6)) );
 						behind.displayText(currentEn.name + " used " + enemySpell.name + ". It did " + damageTaken + " damage");
 						p1.hp-=damageTaken;
 					}
 					else {
-						//behind.displayText("sheesh");
-						
+						//setup the player's move
 						Moves playerSpell= null;
 						
 						behind.playerMove(true);
@@ -251,9 +248,8 @@ public class Main {
 						behind.displayText("What will you do?");
 						
 						behind.repaint();
-						//int initialC=mice.clicks;
 						while(playerSpell==null) {
-							
+							//wait for player to choose to attack or use item
 							if(mice.clicked && contains(mice.click, behind.getA())) {
 								int bonusA=0;
 								if(p1.equipped!=null) {
@@ -287,9 +283,8 @@ public class Main {
 						
 						//if they chose to answer a question
 						if(playerSpell.name.equals("Textbook Slap")) {
-							
+							//randomize where the question's answer goes
 							int q=(int) (Math.random()*questions.size());
-							// put question logic here
 							behind.displayText(questions.get(q)[0]);
 							
 							int spot = (int)(Math.random()* 4); //what question spot the answer will be
@@ -297,6 +292,8 @@ public class Main {
 							
 							String[] answerOrder= new String[4]; //the order the anwers will appear in
 							answerOrder[spot] = questions.get(q)[1];
+							
+							//fill in the rest of the questions into a spot
 							int j=2;
 							for(int i=0; i<answerOrder.length; i++) {
 								if(answerOrder[i]!=null) {
@@ -312,6 +309,7 @@ public class Main {
 							
 							behind.repaint();
 							
+							//wait for them to answer the question
 							int answer = -1;
 							while(answer==-1) {
 								
@@ -341,6 +339,7 @@ public class Main {
 								catch(InterruptedException e) {}
 							}
 							
+							//check if the answer is right, if not change dmg they do to 0
 							if(answer==spot) {
 								
 							}
@@ -350,6 +349,7 @@ public class Main {
 							
 						}
 						
+						//display dmg
 						if(playerSpell.damage>0) {
 							behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
 
@@ -364,6 +364,7 @@ public class Main {
 						
 					}
 					
+					//change whose move it is
 					enemyMove=!enemyMove;
 					
 					
@@ -376,19 +377,21 @@ public class Main {
 					behind.currentEn=currentEn;
 				}
 			}
-			
+			//for movement part
 			else {
 				backpack.setVisible(true);
 				
 				int veloX=p1.updateX(keyboard);
 				int veloY=p1.updateY(keyboard);
 				
+				//check to see if player clicked on anything
 				for(int i=things.size()-1; i>=0; i--) {
 					Entity en= things.get(i);
 					if(mice.clicked) {
 						if(distance(p1.x, p1.y, en.x, en.y)<radius && contains(mice.globalClick.x, mice.globalClick.y, en.x, en.y, en.width, en.height)) {
+							
+							//if clicked on enemy, engage battle
 							if(en.getClass().equals(Enemy.class)) {
-								//System.out.println("sheeesh");
 								
 								p1.hp=p1.maxHp;
 								
@@ -400,7 +403,7 @@ public class Main {
 							}
 							
 							
-							//lootboxes
+							//lootboxes, give player random item and add it to the save file too
 							else if(en.getClass().equals(Lootbox.class)) {
 								EquippableItem rolledItem= ((Lootbox)en).roll();
 								if(!p1.items.contains(rolledItem)) {
@@ -443,9 +446,10 @@ public class Main {
 								
 								things.remove(i);
 							}
+							//if clicked on blue box, display game credits
 							else if(en.getClass().equals(CreditBox.class)){
 								behind.displayTextBox("Credits: Thank you Wasserman!! From LHS CO-2021 Lead Graphic Designer: Ally Mintz, Lead Item Developer: Divy Jain, Question Developer: Ethan Dcosta, Lead Engine Developer: Thomas Lang");
-								System.out.println("Credits \nThank you Wasserman, From LHS CO-2021 \nLead Graphic Designer: Ally Mintz \nLead Item Developer: Divy Jain \nQuestion Developer: Ethan Dcosta \nLead Engine Developer: Thomas Lang");
+								//System.out.println("Credits \nThank you Wasserman, From LHS CO-2021 \nLead Graphic Designer: Ally Mintz \nLead Item Developer: Divy Jain \nQuestion Developer: Ethan Dcosta \nLead Engine Developer: Thomas Lang");
 								while(!mice.clicked) {
 									try {
 										Thread.sleep(10);
@@ -516,19 +520,22 @@ public class Main {
 				catch(InterruptedException e) {}
 			}
 			
-			
+			//make sure ui is scaling to the size of the frame
 			script= new Font("Roboto", Font.PLAIN, (int) (frame.getHeight()/50));
 			behind.giveFont(script);
 			
 			backpack.setBounds(frame.getWidth()/32, frame.getHeight()/32, frame.getWidth()/8, frame.getHeight()/8);
 			backpack.setFont(script);
 			
+			//refresh graphics
 			behind.repaint();
 
+			//if player has no item equipped but items in their inventory, equip the first one
 			if(p1.items.size()>0 && p1.equipped==null) {
 				p1.equipItem(p1.items.get(0));
 			}
 			
+			//wait until the player clicks for text boxes
 			if(battling || behind.textBox!=null) {
 				while(!mice.clicked) {
 					try {
@@ -547,11 +554,6 @@ public class Main {
 					catch(InterruptedException e) {}
 				}
 			}
-			
-
-			
-			//behind.displayTextBox(null);
-			//behind.displayText(null);
 			
 			try {
 				Thread.sleep(10);

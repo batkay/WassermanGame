@@ -18,8 +18,10 @@ import javax.swing.JFrame;
 
 import static game.Utilities.*;
 
-public class Background extends Canvas implements Runnable {
-	
+public class Background extends Canvas {
+	/*
+	 * Drawing class
+	 */
 	JFrame f;
 	Player p1;
 	ArrayList<Entity> things;
@@ -65,6 +67,7 @@ public class Background extends Canvas implements Runnable {
 		this.m=m;
 		this.script=script;
 		
+		//load all the images for buttons
 		try {
 			button0 = ImageIO.read(new File("src/extras/firstOpt.png"));
 			button1 = ImageIO.read(new File("src/extras/SecondOpt.png"));
@@ -81,6 +84,7 @@ public class Background extends Canvas implements Runnable {
 		
 	}
 	
+	//lots of information the class needs lmao
 	public void giveFont(Font f) {
 		script=f;
 	}
@@ -125,19 +129,6 @@ public class Background extends Canvas implements Runnable {
 	}
 	
 	@Override
-	public void run() {
-		while (true) {
-			//repaint();
-			
-			try {
-				Thread.sleep(10);
-				
-			}
-			catch(InterruptedException e) {}
-		}
-	}
-	
-	@Override
 	public void update(Graphics g) {
 		paint(g);
 	}
@@ -158,14 +149,13 @@ public class Background extends Canvas implements Runnable {
 		Image buffer=createImage(f.getWidth(), f.getHeight()); //create a new image to draw on
         Graphics2D bufferG=(Graphics2D) buffer.getGraphics(); //get its graphics
         bufferG.setFont(script);
+        
+        //make background teal
 		bufferG.setColor(new Color(177, 255, 255));
 
         bufferG.fillRect(0, 0, width, height);
-    	//bufferG.setBackground(new Color(0, 128, 128));
 
-        
-        //bufferG.drawString("x: "+ Main.p1.xPos+"\ny:" + Main.p1.yPos, 200, 205);
-    	
+            	
         bufferG.setColor(Color.GRAY);
        
         if(battling) {
@@ -175,37 +165,41 @@ public class Background extends Canvas implements Runnable {
         	aButton = new Entity (width/10, height*18/20-factor*50, factor*2*50, factor * 2 *50, attackButton);
         	iButton = new Entity (width*7/10, height*18/20-factor*50, factor*2*50, factor*2*50, itemButton);
         	
+        	//draw enemy
+        	if(currentEn.pic!=null) {
+        		bufferG.drawImage(currentEn.pic, 3*width/4-enWidth/2, height/8, enWidth, enHeight, this);
+        	}
+        	else {
+        		bufferG.setColor(Color.YELLOW);
+            	bufferG.fillRect(3*width/4-enWidth/2, height/8, enWidth, enHeight); //enemy drawing
+        	}
         	
-        	bufferG.setColor(Color.YELLOW);
-        	bufferG.fillRect(3*width/4-enWidth/2, height/8, enWidth, enHeight); //enemy drawing
-        	
+        	//display any messages
         	bufferG.setColor(Color.BLACK);
         	if(text!=null) {
         		bufferG.drawString(text, factor, height*6/10);
         		text=null;
         	}
         	
+        	//draw Jimmy the Java
         	bufferG.setColor(Color.BLUE);
-        	//bufferG.fillRect(2*pWidth, height*3/8, pWidth*2, pHeight*2);
         	bufferG.drawImage(p1.getPic(), 2*pWidth, height*3/8, pWidth*2, pHeight*2, this);
         	
+        	//player hp and enemy hp bar
         	bufferG.setColor(Color.GREEN);
         	bufferG.fillRect(width/2, height*3/8, (int) ((p1.hp/p1.maxHp)*width/4), height/20);
         	
         	bufferG.setColor(Color.RED);
         	bufferG.fillRect(pWidth, height/8, (int) ((currentEn.hp/currentEn.maxHp)*width/4), height/20);
         	
+        	//if player is choosing what attack to use, display the buttons
         	if(pMove) {
         		bufferG.drawImage(aButton.pic, (int)(aButton.x-aButton.width/2), (int)(aButton.y-aButton.height/2), aButton.width, aButton.height,this);
         		bufferG.drawImage(iButton.pic, (int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height,this);
 
-        		/*
-        		bufferG.setColor(Color.CYAN);
-            	bufferG.fillRect((int)(aButton.x-aButton.width/2), (int)(aButton.y-aButton.height/2), aButton.width, aButton.height);
-            	bufferG.fillRect((int)(iButton.x-iButton.width/2), (int)(iButton.y-iButton.height/2), iButton.width, iButton.height);
-            	*/
         	}
         	
+        	//display answer choices if question asked
         	if(askedQ) {
         		tlB = new Entity (width/10, height*16/20-factor*50, factor*50, factor*50, button0);
             	trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50, button1);
@@ -228,13 +222,14 @@ public class Background extends Canvas implements Runnable {
                 	bufferG.drawImage(button.getPic(), (int)(button.x-button.width/2), (int)(button.y-button.height/2), button.width, button.height, this);
             	}
             	
-            	
         		askedQ=false;
         	}
         	
-        	
         }
+        
+        //drawings for if player is moving around
         else {
+        	//for everything, if it has an image, draw the image, otherwise draw a colored box
         	for(Entity en: things) {
         		boolean hasPic=false;
             	Point relP=relativeToP(p1, (int) en.x, (int) en.y);
@@ -261,7 +256,6 @@ public class Background extends Canvas implements Runnable {
         		}
         		else {
         			bufferG.setColor(new Color(249, 192, 216));
-
         		}
         		
         		if(!hasPic) {
@@ -271,7 +265,7 @@ public class Background extends Canvas implements Runnable {
             }
             
         	
-        	
+        	//if there is a message to draw, draw it in an orange box
         	if(displayingMessage) {
         		displayingMessage=false;
         	}
@@ -293,16 +287,16 @@ public class Background extends Canvas implements Runnable {
             //bufferG.fillRect(width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight); //for player
         	bufferG.drawImage(p1.getPic(), width/2-pWidth/2, height/2-pHeight/2, pWidth, pHeight, this);
             bufferG.rotate(-(m.angle+Math.PI/2), width/2, height/2);
-
         }
+        
+        //display the current level and item equipped
         bufferG.setColor(Color.BLACK);
         bufferG.drawString("Current Level: " + level , width*9/10, 20);
         if(p1.equipped!=null) {
-        	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/10, height/10);
+        	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/7, height/7);
 
         }
-		//bufferG.setBackground(new Color(0, 128, 128));
-
+        
         g.drawImage(buffer, 0, 0, this); //place the buffer image onto the actual
 	}
 	public void displayText(String text) {

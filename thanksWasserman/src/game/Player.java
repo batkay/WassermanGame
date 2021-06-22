@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Player extends Entity{
+	/*
+	 * Player class, stores some info and can equip items
+	 */
 	double hp;
 	double maxHp;
 	double baseHp;
@@ -78,13 +81,12 @@ public class Player extends Entity{
 		}
 		this.items.add(this.equipped);
 		this.equipped = e;
-		//this.items.remove(e);
 		
 		double difference = maxHp-hp;
 		
 		maxHp=baseHp;
 		maxHp+=e.hp;
-		hp=maxHp-hp;
+		hp=maxHp-difference;
 		if(hp<1) {
 			hp=1;
 		}

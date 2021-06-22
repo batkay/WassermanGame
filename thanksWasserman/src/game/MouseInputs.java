@@ -16,6 +16,9 @@ import java.awt.Point;
 import static game.Utilities.*;
 
 public class MouseInputs extends MouseAdapter{
+	/*
+	 * Tracks where the mouse is on screen
+	 */
 	
 	JFrame j;
 	Player p;
