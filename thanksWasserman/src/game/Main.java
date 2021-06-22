@@ -193,6 +193,7 @@ public class Main {
 		
 		//setup the drawing object
 		Background behind = new Background(size, frame, p1, things, mice, script);
+		Thread music = new Thread(behind);
 		behind.setLevel(currentLevel);
 		
 		Inputs keyboard= new Inputs();
@@ -229,8 +230,8 @@ public class Main {
 		
 		//music setup
 		String filepath = "src/extras/fighting.wav";
-		musiccode Music = new musiccode();
-		Music.playMusic(filepath);
+		behind.playMusic(filepath);
+		music.start();
 		
 		//and the game starts!
 		while(p1.hp>0) {
@@ -536,7 +537,7 @@ public class Main {
 			}
 			
 			//make sure ui is scaling to the size of the frame
-			script= new Font("Roboto", Font.PLAIN, (int) (frame.getHeight()/50));
+			script= new Font("Roboto", Font.PLAIN, (int) Math.round(frame.getHeight()/50));
 			behind.giveFont(script);
 			
 			backpack.setBounds(frame.getWidth()/32, frame.getHeight()/32, frame.getWidth()/8, frame.getHeight()/8);

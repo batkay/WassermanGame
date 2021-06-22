@@ -14,11 +14,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.JFrame;
 
 import static game.Utilities.*;
 
-public class Background extends Canvas {
+public class Background extends Canvas implements Runnable {
 	/*
 	 * Drawing class
 	 */
@@ -58,6 +62,42 @@ public class Background extends Canvas {
 	Image itemButton;
 	
 	Font script;
+	
+	Clip clip;
+	
+	public void run() {
+	      clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+	}
+	public void playMusic(String musicLocation){
+		  try{
+		    File musicPath = new File(musicLocation);
+		    if(musicPath.exists()){
+		      AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+		      clip = AudioSystem.getClip();
+		      clip.open(audioInput);
+
+		      FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+		      gainControl.setValue(-40.0f); // Reduce volume by 10 decibels
+		      clip.start();
+		      /*try {
+		            Thread.sleep(200000);
+		        }
+		      catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }*/
+		      //JOptionPane.showMessageDialog(null, "test");
+		    }
+		    else{
+		      System.out.println("bruh");
+		    }
+
+		  }
+		  catch(Exception e){
+		    e.printStackTrace();
+		  }
+		}
 	
 	public Background(Dimension s, JFrame f, Player p1, ArrayList<Entity> things, MouseInputs m, Font script){
 		setSize(s); //set the frame to an initial size
@@ -201,19 +241,29 @@ public class Background extends Canvas {
         	
         	//display answer choices if question asked
         	if(askedQ) {
-        		tlB = new Entity (width/10, height*16/20-factor*50, factor*50, factor*50, button0);
-            	trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50, button1);
+        		//tlB = new Entity (factor*50, height*16/20-factor*50, factor*50, factor*50, button0);
+            	//trB = new Entity (width*6/10, height*16/20-factor*50, factor*50, factor*50, button1);
         		
-            	blB=new Entity (width/10, height*18/20-factor*50, factor*50, factor *50, button2);
-            	brB=new Entity (width*6/10, height*18/20-factor*50, factor*50, factor *50, button3);
+            	//blB=new Entity (factor*50, height*18/20-factor*50, factor*50, factor *50, button2);
+            	//brB=new Entity (width*6/10, height*18/20-factor*50, factor*50, factor *50, button3);
+            	
+            	tlB = new Entity (factor*50, height*16/20-factor*50, factor*50, factor*50, button0);
+            	trB = new Entity (factor*50, height*17/20-factor*50, factor*50, factor*50, button1);
+        		
+            	blB=new Entity (factor*50, height*18/20-factor*50, factor*50, factor *50, button2);
+            	brB=new Entity (factor*50, height*19/20-factor*50, factor*50, factor *50, button3);
             	
             	Entity[] buttons = {tlB, trB, blB, brB};
 
             	bufferG.setColor(Color.BLACK);
-            	bufferG.drawString(answers[0], width*2/10, height*16/20-factor*50);
-            	bufferG.drawString(answers[1], width*7/10, height*16/20-factor*50);
-            	bufferG.drawString(answers[2], width*2/10, height*18/20-factor*50);
-            	bufferG.drawString(answers[3], width*7/10, height*18/20-factor*50);
+            	bufferG.drawString(answers[0], factor*100, height*16/20-factor*50);
+            	bufferG.drawString(answers[1], factor*100, height*17/20-factor*50);
+            	bufferG.drawString(answers[2], factor*100, height*18/20-factor*50);
+            	bufferG.drawString(answers[3], factor*100, height*19/20-factor*50);
+            	//bufferG.drawString(answers[0], factor*100, height*16/20-factor*50);
+            	//bufferG.drawString(answers[1], width*19/30, height*16/20-factor*50);
+            	//bufferG.drawString(answers[2], factor*100, height*18/20-factor*50);
+            	//bufferG.drawString(answers[3], width*19/30, height*18/20-factor*50);
 
             	bufferG.setColor(Color.MAGENTA);
 
@@ -293,7 +343,7 @@ public class Background extends Canvas {
         bufferG.setColor(Color.BLACK);
         bufferG.drawString("Current Level: " + level , width*9/10, 20);
         if(p1.equipped!=null) {
-        	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/7, height/7);
+        	bufferG.drawString("Equipped Item: " + p1.equipped.name, width/4, height/9);
 
         }
         
