@@ -355,7 +355,7 @@ public class Main {
 						}
 						
 						//display dmg
-						if(playerSpell.damage>0) {
+						if(playerSpell.damage>=0) {
 							behind.displayText("You used " + playerSpell.name + ". It did " + playerSpell.damage + " damage");
 							currentEn.hp-=playerSpell.damage;
 
