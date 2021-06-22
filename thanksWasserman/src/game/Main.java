@@ -136,10 +136,15 @@ public class Main {
 						}
 						reconstructed=reconstructed+words[i];
 						
+						
+						while(reconstructed.contains("|")) {
+							reconstructed = reconstructed.substring(0, reconstructed.indexOf("|")) + "," + reconstructed.substring(reconstructed.indexOf("|")+1);
+						}
 						words[i]=reconstructed;
 						
 					}
 				}
+				
 				
 				//add words to the list
 				questions.add(words);
